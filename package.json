@@ -31,6 +31,8 @@
   },
   "devDependencies": {
     "@eslint/js": "9.22.0",
+    "@testing-library/jest-dom": "5.16.4",
+    "@testing-library/react": "12.1.5",
     "@trivago/prettier-plugin-sort-imports": "5.2.2",
     "@types/node": "22.15.3",
     "@types/react": "16.8.0",
@@ -41,6 +43,7 @@
     "eslint": "9.25.1",
     "eslint-plugin-react-hooks": "5.2.0",
     "globals": "16.0.0",
+    "jsdom": "^26.1.0",
     "prettier": "3.5.3",
     "react": "16.8.0",
     "react-dom": "16.8.0",

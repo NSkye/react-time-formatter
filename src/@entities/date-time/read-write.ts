@@ -1,30 +1,31 @@
-import { stripContext } from '@shared/strip-context';
+import { contextify } from '@shared/contextify';
 import { MINUTE } from '@shared/time-primitives';
 
 import { DateTimeBreakdownInput } from './breakdown';
 import { CalendarToken } from './tokens';
 
 const utcGetters = {
-  year: stripContext(Date.prototype.getUTCFullYear),
-  month: stripContext(Date.prototype.getUTCMonth),
-  date: stripContext(Date.prototype.getUTCDate),
-  day: stripContext(Date.prototype.getUTCDay),
-  hours: stripContext(Date.prototype.getUTCHours),
-  minutes: stripContext(Date.prototype.getUTCMinutes),
-  seconds: stripContext(Date.prototype.getUTCSeconds),
-  milliseconds: stripContext(Date.prototype.getUTCMilliseconds),
-} as const satisfies Record<CalendarToken, unknown>;
+  year: contextify(Date.prototype.getUTCFullYear),
+  month: (context: Date) => Date.prototype.getUTCMonth.call(context) + 1,
+  date: contextify(Date.prototype.getUTCDate),
+  day: contextify(Date.prototype.getUTCDay),
+  hours: contextify(Date.prototype.getUTCHours),
+  minutes: contextify(Date.prototype.getUTCMinutes),
+  seconds: contextify(Date.prototype.getUTCSeconds),
+  milliseconds: contextify(Date.prototype.getUTCMilliseconds),
+} as const satisfies Record<CalendarToken, (date: Date) => number>;
 
 const utcSetters = {
-  year: stripContext(Date.prototype.setUTCFullYear),
-  month: stripContext(Date.prototype.setUTCMonth),
-  date: stripContext(Date.prototype.setUTCDate),
-  day: stripContext(Date.prototype.getUTCDay),
-  hours: stripContext(Date.prototype.setUTCHours),
-  minutes: stripContext(Date.prototype.setUTCMinutes),
-  seconds: stripContext(Date.prototype.setUTCSeconds),
-  milliseconds: stripContext(Date.prototype.setUTCMilliseconds),
-} as const satisfies Record<CalendarToken, unknown>;
+  year: contextify(Date.prototype.setUTCFullYear),
+  month: (context: unknown, month: number, ...rest: number[]) =>
+    Date.prototype.setUTCMonth.call(context, month - 1, ...rest),
+  date: contextify(Date.prototype.setUTCDate),
+  day: contextify(Date.prototype.getUTCDay),
+  hours: contextify(Date.prototype.setUTCHours),
+  minutes: contextify(Date.prototype.setUTCMinutes),
+  seconds: contextify(Date.prototype.setUTCSeconds),
+  milliseconds: contextify(Date.prototype.setUTCMilliseconds),
+} as const satisfies Record<CalendarToken, (date: Date, value: number) => number>;
 
 export const writeCalendarToken = (
   date: Date,

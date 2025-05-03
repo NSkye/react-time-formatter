@@ -28,6 +28,12 @@ describe('readCalendarToken', () => {
     const day = readCalendarToken(date, 'day', 0);
     expect(day).toBe(1); // Monday
   });
+
+  test('reads months as 1-indexed', () => {
+    const date = new Date('2024-04-01T00:00:00Z');
+    const month = readCalendarToken(date, 'month', 0);
+    expect(month).toBe(4);
+  });
 });
 
 describe('writeCalendarToken', () => {
@@ -41,6 +47,11 @@ describe('writeCalendarToken', () => {
   test('respects timezone offset', () => {
     const updated = writeCalendarToken(date, 'hours', 3, 180); // UTC+3
     expect(readCalendarToken(updated, 'hours', 180)).toBe(3);
+  });
+
+  test('writes month as 1-indexed', () => {
+    const updated = writeCalendarToken(date, 'month', 3, 0);
+    expect(updated.getUTCMonth()).toBe(2);
   });
 
   test('writing to month does not affect other fields', () => {
