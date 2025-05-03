@@ -1,16 +1,24 @@
 {
   "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.cache/tsconfig.main.tsbuildinfo",
+
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
 
+    "paths": {
+      "@entities/*": ["./src/@entities/*"],
+      "@shared/*": ["./src/@shared/*"],
+      "@/*": ["./src/*"]
+    },
+
     "noEmit": false,
     "declaration": true,
-    "declarationMap": true,
-    "emitDeclarationOnly": false,
-    "outDir": "./dist",
+    "declarationMap": false,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist/types",
 
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,7 +28,7 @@
     "moduleResolution": "bundler",
     "isolatedModules": true,
     "moduleDetection": "force",
-    "jsx": "react-jsx",
+    "jsx": "react",
 
     /* Linting */
     "strict": true,

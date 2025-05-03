@@ -4,7 +4,18 @@ import path from "path";
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  plugins: [react()],
+  plugins: [
+    react({
+      jsxRuntime: "classic",
+    }),
+  ],
+  resolve: {
+    alias: {
+      "@entities": path.resolve(__dirname, "./src/@entities"),
+      "@shared": path.resolve(__dirname, "./src/@shared"),
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
   build: {
     minify: mode === "production",
     lib: {
@@ -14,6 +25,16 @@ export default defineConfig(({ mode }) => ({
     },
     rollupOptions: {
       external: ["react", "react-dom"],
+    },
+  },
+  test: {
+    globals: true,
+    environment: "node",
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "html"],
+      include: ["src/**/*"],
+      exclude: ["src/tz/**/*", "dist/**/*"],
     },
   },
 }));
