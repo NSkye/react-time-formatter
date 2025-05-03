@@ -1,27 +1,15 @@
-import {
-  YEAR,
-  MONTH,
-  WEEK,
-  DAY,
-  HOUR,
-  MINUTE,
-  SECOND,
-  MILLISECOND,
-} from "@shared/time-primitives";
+import { DAY, HOUR, MILLISECOND, MINUTE, MONTH, SECOND, WEEK, YEAR } from '@shared/time-primitives';
 
-export const VARIABLE_TIME_UNITS = ["years", "months"] as const;
+export const VARIABLE_TIME_UNITS = ['years', 'months'] as const;
 export const STABLE_TIME_UNITS = [
-  "weeks",
-  "days",
-  "hours",
-  "minutes",
-  "seconds",
-  "milliseconds",
+  'weeks',
+  'days',
+  'hours',
+  'minutes',
+  'seconds',
+  'milliseconds',
 ] as const;
-export const RELATIVE_TIME_UNITS = [
-  ...VARIABLE_TIME_UNITS,
-  ...STABLE_TIME_UNITS,
-] as const;
+export const RELATIVE_TIME_UNITS = [...VARIABLE_TIME_UNITS, ...STABLE_TIME_UNITS] as const;
 
 export type VariableTimeUnit = (typeof VARIABLE_TIME_UNITS)[number];
 export type StableTimeUnit = (typeof STABLE_TIME_UNITS)[number];
@@ -38,8 +26,7 @@ const UNIT_TO_MS = {
   milliseconds: MILLISECOND,
 } as const satisfies Record<RelativeTimeUnit, number>;
 
-export const relativeTimeUnitToMs = (unit: RelativeTimeUnit) =>
-  UNIT_TO_MS[unit];
+export const relativeTimeUnitToMs = (unit: RelativeTimeUnit) => UNIT_TO_MS[unit];
 
 export const isStableTimeUnit = (value: string): value is StableTimeUnit =>
   Array.prototype.includes.call(STABLE_TIME_UNITS, value);

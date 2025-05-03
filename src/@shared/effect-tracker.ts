@@ -11,18 +11,17 @@ export const createSyncEffectTracker = <T>(): ScopedEffectTracker<T> => {
   const pushScope = (onDispatch: OnDispatch<T>) => scopes.push(onDispatch);
   const popScope = () => scopes.pop();
 
-  const dispatch: ScopedEffectTracker<T>["dispatch"] = (payload) => {
+  const dispatch: ScopedEffectTracker<T>['dispatch'] = payload => {
     if (!scopes.length) return;
     scopes.at(-1)?.(payload);
   };
 
-  const createScope: ScopedEffectTracker<T>["createScope"] =
-    (onDispatch) => (fn) => {
-      pushScope(onDispatch);
-      const result = fn();
-      popScope();
-      return result;
-    };
+  const createScope: ScopedEffectTracker<T>['createScope'] = onDispatch => fn => {
+    pushScope(onDispatch);
+    const result = fn();
+    popScope();
+    return result;
+  };
 
   return {
     createScope,

@@ -1,7 +1,8 @@
-import { stripContext } from "@shared/strip-context";
-import { MINUTE } from "@shared/time-primitives";
-import { DateTimeBreakdownInput } from "./breakdown";
-import { CalendarToken } from "./tokens";
+import { stripContext } from '@shared/strip-context';
+import { MINUTE } from '@shared/time-primitives';
+
+import { DateTimeBreakdownInput } from './breakdown';
+import { CalendarToken } from './tokens';
 
 const utcGetters = {
   year: stripContext(Date.prototype.getUTCFullYear),
@@ -29,7 +30,7 @@ export const writeCalendarToken = (
   date: Date,
   token: CalendarToken,
   value: number,
-  timezoneOffset: number = date.getTimezoneOffset(),
+  timezoneOffset: number = date.getTimezoneOffset()
 ): Date => {
   const tokenSetter = utcSetters[token];
 
@@ -40,9 +41,7 @@ export const writeCalendarToken = (
   tokenSetter(referenceDate, value);
 
   // Shift timestamp of reference date back to correct one and construct new date from it
-  const changingDate = new Date(
-    referenceDate.valueOf() + timezoneOffset * MINUTE,
-  );
+  const changingDate = new Date(referenceDate.valueOf() + timezoneOffset * MINUTE);
 
   // Return resulting date
   return changingDate;
@@ -51,7 +50,7 @@ export const writeCalendarToken = (
 export const readCalendarToken = (
   date: Date,
   token: CalendarToken,
-  timezoneOffset: number = date.getTimezoneOffset(),
+  timezoneOffset: number = date.getTimezoneOffset()
 ): number => {
   const tokenGetter = utcGetters[token];
 
@@ -62,9 +61,7 @@ export const readCalendarToken = (
   return tokenGetter(referenceDate);
 };
 
-export const inferDateFromDateTimeBreakdown = (
-  input: DateTimeBreakdownInput,
-): Date => {
+export const inferDateFromDateTimeBreakdown = (input: DateTimeBreakdownInput): Date => {
   const {
     year,
     month = 1,
@@ -73,31 +70,15 @@ export const inferDateFromDateTimeBreakdown = (
     minutes = 0,
     seconds = 0,
     milliseconds = 0,
-    timezoneOffset = "Local",
+    timezoneOffset = 'Local',
   } = input;
 
-  if (timezoneOffset === "Local")
-    return new Date(
-      year,
-      month - 1,
-      date,
-      hours,
-      minutes,
-      seconds,
-      milliseconds,
-    );
+  if (timezoneOffset === 'Local')
+    return new Date(year, month - 1, date, hours, minutes, seconds, milliseconds);
 
-  const offsetInMinutes = timezoneOffset === "UTC" ? 0 : timezoneOffset;
+  const offsetInMinutes = timezoneOffset === 'UTC' ? 0 : timezoneOffset;
 
-  const utcTimestamp = Date.UTC(
-    year,
-    month - 1,
-    date,
-    hours,
-    minutes,
-    seconds,
-    milliseconds,
-  );
+  const utcTimestamp = Date.UTC(year, month - 1, date, hours, minutes, seconds, milliseconds);
 
   return new Date(utcTimestamp + offsetInMinutes * MINUTE);
 };

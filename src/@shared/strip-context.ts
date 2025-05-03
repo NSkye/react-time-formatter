@@ -6,8 +6,6 @@
  * @returns Function with context passed explicitly as the first parameter.
  */
 export const stripContext =
-  <T, A extends unknown[], R>(
-    fn: (this: T, ...args: A) => R,
-  ): ((context: T, ...args: A) => R) =>
+  <T, A extends unknown[], R>(fn: (this: T, ...args: A) => R): ((context: T, ...args: A) => R) =>
   (context, ...args) =>
     fn.call(context, ...args);

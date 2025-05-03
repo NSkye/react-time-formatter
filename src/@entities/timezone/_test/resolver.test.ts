@@ -1,42 +1,43 @@
-import { describe, expect, test, vi } from "vitest";
-import {
-  timezoneOffsetResolverUTC,
-  timezoneOffsetResolverLocal,
-  createDefaultTimezoneOffsetResolver,
-} from "@entities/timezone";
+import { describe, expect, test, vi } from 'vitest';
 
-describe("timezoneOffsetResolverUTC", () => {
-  test("always returns 0", () => {
+import {
+  createDefaultTimezoneOffsetResolver,
+  timezoneOffsetResolverLocal,
+  timezoneOffsetResolverUTC,
+} from '@entities/timezone';
+
+describe('timezoneOffsetResolverUTC', () => {
+  test('always returns 0', () => {
     const now = new Date();
     expect(timezoneOffsetResolverUTC(now)).toBe(0);
   });
 });
 
-describe("timezoneOffsetResolverLocal", () => {
-  test("returns Date.prototype.getTimezoneOffset()", () => {
+describe('timezoneOffsetResolverLocal', () => {
+  test('returns Date.prototype.getTimezoneOffset()', () => {
     const d = new Date();
     expect(timezoneOffsetResolverLocal(d)).toBe(d.getTimezoneOffset());
   });
 });
 
-describe("createDefaultTimezoneOffsetResolver", () => {
+describe('createDefaultTimezoneOffsetResolver', () => {
   test('returns local resolver for "Local"', () => {
     const d = new Date();
-    const resolver = createDefaultTimezoneOffsetResolver("Local");
+    const resolver = createDefaultTimezoneOffsetResolver('Local');
     expect(resolver(d)).toBe(d.getTimezoneOffset());
   });
 
   test('returns UTC resolver for "UTC"', () => {
-    const resolver = createDefaultTimezoneOffsetResolver("UTC");
+    const resolver = createDefaultTimezoneOffsetResolver('UTC');
     expect(resolver(new Date())).toBe(0);
   });
 
-  test("returns literal resolver for number input", () => {
+  test('returns literal resolver for number input', () => {
     const resolver = createDefaultTimezoneOffsetResolver(-180);
     expect(resolver(new Date())).toBe(-180);
   });
 
-  test("returns function as-is when passed in", () => {
+  test('returns function as-is when passed in', () => {
     const mock = vi.fn().mockReturnValue(42);
     const resolver = createDefaultTimezoneOffsetResolver(mock);
     expect(resolver(new Date())).toBe(42);

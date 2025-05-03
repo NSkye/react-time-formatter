@@ -1,12 +1,15 @@
-import React, { memo, ReactNode, useRef } from "react";
-import { satisfiesDurationConfig } from "../core/satisfies-config";
-import { breakdownDuration } from "../core/breakdown";
+import React, { ReactNode, memo, useRef } from 'react';
+
 import {
-  normalizeRelativeTimeConfig,
   RelativeTimeBreakdown,
   RelativeTimeConfig,
-} from "@entities/relative-time";
-import { spyOnPropertyAccess } from "@shared/access-tracker";
+  normalizeRelativeTimeConfig,
+} from '@entities/relative-time';
+
+import { spyOnPropertyAccess } from '@shared/access-tracker';
+
+import { breakdownDuration } from '../core/breakdown';
+import { satisfiesDurationConfig } from '../core/satisfies-config';
 
 interface DurationProps {
   ms: number;
@@ -29,10 +32,7 @@ export const Duration = memo(({ ms, children }: DurationProps): JSX.Element => {
   const lastConfig = lastConfigRef.current;
 
   const render = (config: RelativeTimeConfig) => {
-    const breakdown = breakdownDuration(
-      ms,
-      normalizeRelativeTimeConfig(config),
-    );
+    const breakdown = breakdownDuration(ms, normalizeRelativeTimeConfig(config));
 
     const [result, newConfig] = spyOnPropertyAccess<
       ReactNode,

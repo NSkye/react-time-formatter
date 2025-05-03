@@ -1,12 +1,12 @@
 export const CALENDAR_TOKENS = [
-  "year",
-  "month",
-  "day",
-  "date",
-  "hours",
-  "minutes",
-  "seconds",
-  "milliseconds",
+  'year',
+  'month',
+  'day',
+  'date',
+  'hours',
+  'minutes',
+  'seconds',
+  'milliseconds',
 ] as const;
 
 export type CalendarToken = (typeof CALENDAR_TOKENS)[number];

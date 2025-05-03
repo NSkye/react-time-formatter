@@ -1,40 +1,30 @@
-import React, { memo, ReactNode, useMemo } from "react";
-import {
-  createDefaultTimezoneOffsetResolver,
-  TimezoneOffsetResolver,
-} from "@entities/timezone";
+import React, { ReactNode, memo, useMemo } from 'react';
+
 import {
   CALENDAR_TOKENS,
   DateTimeBreakdownInput,
   DateTimeBreakdownOutput,
-} from "@entities/date-time";
-import {
-  inferDateFromDateTimeBreakdown,
-  readCalendarToken,
-} from "@entities/date-time/read-write";
+} from '@entities/date-time';
+import { inferDateFromDateTimeBreakdown, readCalendarToken } from '@entities/date-time/read-write';
+import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
 
 interface DateTimeProps {
   date: Date | DateTimeBreakdownInput | string | number;
-  timezoneOffset?: "UTC" | "Local" | number | TimezoneOffsetResolver;
+  timezoneOffset?: 'UTC' | 'Local' | number | TimezoneOffsetResolver;
   children: (breakdown: DateTimeBreakdownOutput) => ReactNode;
 }
 
 export const DateTime = memo(
-  ({
-    date,
-    timezoneOffset = "Local",
-    children,
-  }: DateTimeProps): JSX.Element => {
+  ({ date, timezoneOffset = 'Local', children }: DateTimeProps): JSX.Element => {
     const dateObj = (() => {
       if (date instanceof Date) return date;
-      if (typeof date === "string") return new Date(date);
-      if (typeof date === "number") return new Date(date);
+      if (typeof date === 'string') return new Date(date);
+      if (typeof date === 'number') return new Date(date);
 
       return inferDateFromDateTimeBreakdown(date);
     })();
 
-    const timezoneOffsetResolver =
-      createDefaultTimezoneOffsetResolver(timezoneOffset);
+    const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
     const timezoneOffsetMinutes = timezoneOffsetResolver(dateObj);
 
     const breakdown = useMemo(() => {
@@ -43,16 +33,12 @@ export const DateTime = memo(
       };
 
       for (const token of CALENDAR_TOKENS) {
-        breakdownResult[token] = readCalendarToken(
-          dateObj,
-          token,
-          timezoneOffsetMinutes,
-        );
+        breakdownResult[token] = readCalendarToken(dateObj, token, timezoneOffsetMinutes);
       }
 
       return breakdownResult as DateTimeBreakdownOutput;
     }, [dateObj, timezoneOffsetMinutes]);
 
     return <>{children(breakdown)}</>;
-  },
+  }
 );

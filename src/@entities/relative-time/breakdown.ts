@@ -1,8 +1,4 @@
-import {
-  RELATIVE_TIME_UNITS,
-  RelativeTimeUnit,
-  relativeTimeUnitToMs,
-} from "./units";
+import { RELATIVE_TIME_UNITS, RelativeTimeUnit, relativeTimeUnitToMs } from './units';
 
 /**
  * Base entities
@@ -25,8 +21,7 @@ export type RelativeTimeTotals = {
   totalSeconds: number;
   totalMilliseconds: number;
 };
-export type RelativeTimeBreakdownOutput = RelativeTimeBreakdown &
-  RelativeTimeTotals;
+export type RelativeTimeBreakdownOutput = RelativeTimeBreakdown & RelativeTimeTotals;
 
 /**
  * Input subset
@@ -37,22 +32,20 @@ export type RelativeTimeBreakdownInput = Partial<RelativeTimeBreakdown>;
 /** Normalizers */
 
 export const normalizeRelativeTimeBreakdown = (
-  breakdown: RelativeTimeBreakdownInput,
+  breakdown: RelativeTimeBreakdownInput
 ): RelativeTimeBreakdown => {
   const entries = RELATIVE_TIME_UNITS.map(
-    (unit) =>
-      [
-        unit,
-        typeof breakdown[unit] === "number" ? breakdown[unit] : 0,
-      ] satisfies [RelativeTimeUnit, number],
+    unit =>
+      [unit, typeof breakdown[unit] === 'number' ? breakdown[unit] : 0] satisfies [
+        RelativeTimeUnit,
+        number,
+      ]
   );
 
   return Object.fromEntries(entries) as RelativeTimeBreakdown;
 };
 
-export const normalizeRelativeTimeConfig = (
-  config: RelativeTimeConfig,
-): RelativeTimeConfig => {
+export const normalizeRelativeTimeConfig = (config: RelativeTimeConfig): RelativeTimeConfig => {
   // 1. Among enabled units find unit of the lowest rank
   // 2. Enable all units with a rank lower than his
   //
@@ -81,18 +74,12 @@ export const normalizeRelativeTimeConfig = (
 /** Comparisons */
 
 export const relativeTimeBreakdownsAreEqual = (
-  breakdownA:
-    | RelativeTimeBreakdown
-    | RelativeTimeBreakdownOutput
-    | RelativeTimeBreakdownInput,
-  breakdownB:
-    | RelativeTimeBreakdown
-    | RelativeTimeBreakdownOutput
-    | RelativeTimeBreakdownInput,
+  breakdownA: RelativeTimeBreakdown | RelativeTimeBreakdownOutput | RelativeTimeBreakdownInput,
+  breakdownB: RelativeTimeBreakdown | RelativeTimeBreakdownOutput | RelativeTimeBreakdownInput
 ) => {
   if (
-    Object.prototype.hasOwnProperty.call(breakdownA, "totalMilliseconds") &&
-    Object.prototype.hasOwnProperty.call(breakdownB, "totalMilliseconds")
+    Object.prototype.hasOwnProperty.call(breakdownA, 'totalMilliseconds') &&
+    Object.prototype.hasOwnProperty.call(breakdownB, 'totalMilliseconds')
   )
     return (
       (breakdownA as RelativeTimeBreakdownOutput).totalMilliseconds ===
@@ -109,12 +96,9 @@ export const relativeTimeBreakdownsAreEqual = (
 /** Conversions */
 
 export const relativeTimeBreakdownToMilliseconds = (
-  breakdown:
-    | RelativeTimeBreakdown
-    | RelativeTimeBreakdownOutput
-    | RelativeTimeBreakdownInput,
+  breakdown: RelativeTimeBreakdown | RelativeTimeBreakdownOutput | RelativeTimeBreakdownInput
 ) => {
-  if (Object.prototype.hasOwnProperty.call(breakdown, "totalMilliseconds")) {
+  if (Object.prototype.hasOwnProperty.call(breakdown, 'totalMilliseconds')) {
     return (breakdown as RelativeTimeBreakdownOutput).totalMilliseconds;
   }
 

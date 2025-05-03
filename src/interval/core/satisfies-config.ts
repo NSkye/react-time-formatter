@@ -1,12 +1,12 @@
 import {
-  normalizeRelativeTimeConfig,
   RELATIVE_TIME_UNITS,
   RelativeTimeConfig,
-} from "@entities/relative-time";
+  normalizeRelativeTimeConfig,
+} from '@entities/relative-time';
 
 export const satisfiesIntervalConfig = (
   referenceConfig: RelativeTimeConfig,
-  lastConfig: RelativeTimeConfig,
+  lastConfig: RelativeTimeConfig
 ) => {
   const newConfig = normalizeRelativeTimeConfig(referenceConfig);
   const oldConfig = normalizeRelativeTimeConfig(lastConfig);

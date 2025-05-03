@@ -3,11 +3,11 @@ import {
   RelativeTimeBreakdown,
   RelativeTimeConfig,
   relativeTimeUnitToMs,
-} from "@entities/relative-time";
+} from '@entities/relative-time';
 
 export const breakdownDuration = (
   ms: number,
-  config: RelativeTimeConfig,
+  config: RelativeTimeConfig
 ): RelativeTimeBreakdown => {
   const result: RelativeTimeBreakdown = {
     years: 0,

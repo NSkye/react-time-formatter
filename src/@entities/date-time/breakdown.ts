@@ -1,9 +1,8 @@
-import { CalendarToken } from "./tokens";
+import { CalendarToken } from './tokens';
 
 // Base entities
 
-interface DateTimeBreakdownBase
-  extends Omit<Partial<Record<CalendarToken, number>>, "day"> {
+interface DateTimeBreakdownBase extends Omit<Partial<Record<CalendarToken, number>>, 'day'> {
   year?: number;
   month?: number;
   date?: number;
@@ -12,7 +11,7 @@ interface DateTimeBreakdownBase
   seconds?: number;
   milliseconds?: number;
 
-  timezoneOffset?: number | "UTC" | "Local";
+  timezoneOffset?: number | 'UTC' | 'Local';
 }
 
 interface DateTimeBreakdownYear extends DateTimeBreakdownBase {

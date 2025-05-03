@@ -1,10 +1,11 @@
 import {
-  normalizeRelativeTimeConfig,
   RELATIVE_TIME_UNITS,
   RelativeTimeBreakdown,
   RelativeTimeConfig,
-} from "@entities/relative-time";
-import { breakdownDuration } from "./breakdown";
+  normalizeRelativeTimeConfig,
+} from '@entities/relative-time';
+
+import { breakdownDuration } from './breakdown';
 
 export const satisfiesDurationConfig = (
   referenceConfig: RelativeTimeConfig,
@@ -12,7 +13,7 @@ export const satisfiesDurationConfig = (
     lastConfig: RelativeTimeConfig;
     lastBreakdown: RelativeTimeBreakdown;
     ms: number;
-  },
+  }
 ) => {
   // normalize both configs
   const newConfig = normalizeRelativeTimeConfig(referenceConfig);
@@ -22,9 +23,7 @@ export const satisfiesDurationConfig = (
 
   let _newBreakdown: null | RelativeTimeBreakdown = null;
   const getNewBreakdown = () =>
-    !_newBreakdown
-      ? (_newBreakdown = breakdownDuration(ms, newConfig))
-      : _newBreakdown;
+    !_newBreakdown ? (_newBreakdown = breakdownDuration(ms, newConfig)) : _newBreakdown;
 
   // Will satisfy when both:
   // ALL removed units were 0 in lastBreakdown

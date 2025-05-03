@@ -1,14 +1,13 @@
-import React, { ReactNode, memo, useRef } from "react";
+import React, { ReactNode, memo, useRef } from 'react';
 
-import { satisfiesIntervalConfig } from "../core/satisfies-config";
-import { createDefaultTimezoneOffsetResolver } from "@entities/timezone";
-import { breakdownInterval } from "../core/breakdown";
-import { spyOnPropertyAccess } from "@shared/access-tracker";
-import {
-  RelativeTimeBreakdown,
-  RelativeTimeConfig,
-} from "@entities/relative-time";
-import { IntervalProps, propsAreEqual } from "./prop-types";
+import { RelativeTimeBreakdown, RelativeTimeConfig } from '@entities/relative-time';
+import { createDefaultTimezoneOffsetResolver } from '@entities/timezone';
+
+import { spyOnPropertyAccess } from '@shared/access-tracker';
+
+import { breakdownInterval } from '../core/breakdown';
+import { satisfiesIntervalConfig } from '../core/satisfies-config';
+import { IntervalProps, propsAreEqual } from './prop-types';
 
 /**
  * Should satisfy most of calls
@@ -25,12 +24,7 @@ const defaultConfig = {
 } satisfies RelativeTimeConfig;
 
 export const Interval = memo(
-  ({
-    from,
-    to,
-    timezoneOffset = "Local",
-    children,
-  }: IntervalProps): JSX.Element => {
+  ({ from, to, timezoneOffset = 'Local', children }: IntervalProps): JSX.Element => {
     const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
     const lastConfig = lastConfigRef.current;
 
@@ -38,7 +32,7 @@ export const Interval = memo(
       const breakdown = breakdownInterval(
         [from, to],
         config,
-        createDefaultTimezoneOffsetResolver(timezoneOffset),
+        createDefaultTimezoneOffsetResolver(timezoneOffset)
       );
 
       const [result, newConfig] = spyOnPropertyAccess<
@@ -53,12 +47,11 @@ export const Interval = memo(
     const [naiveResult, newConfig] = render(lastConfig);
     lastConfigRef.current = newConfig;
 
-    if (satisfiesIntervalConfig(newConfig, lastConfig))
-      return <>{naiveResult}</>;
+    if (satisfiesIntervalConfig(newConfig, lastConfig)) return <>{naiveResult}</>;
 
     const [result] = render(newConfig);
 
     return <>{result}</>;
   },
-  propsAreEqual,
+  propsAreEqual
 );

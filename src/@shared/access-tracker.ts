@@ -1,4 +1,4 @@
-import { createSyncEffectTracker } from "./effect-tracker";
+import { createSyncEffectTracker } from './effect-tracker';
 
 const { createScope, dispatch } = createSyncEffectTracker<string>();
 
@@ -18,11 +18,11 @@ export const spyOnPropertyAccess = <
   Fn extends (options: O) => T,
 >(
   options: O,
-  fn: Fn,
+  fn: Fn
 ): [T, Record<keyof O, boolean>] => {
   const optionsProxy = new Proxy(options, {
     get(target, prop, receiver) {
-      if (typeof prop === "string" && prop in target) {
+      if (typeof prop === 'string' && prop in target) {
         dispatch(prop);
         return Reflect.get(target, prop, receiver);
       }
@@ -30,11 +30,9 @@ export const spyOnPropertyAccess = <
     },
   });
 
-  const accessMap = Object.fromEntries(
-    Object.keys(options).map((key) => [key, false]),
-  );
+  const accessMap = Object.fromEntries(Object.keys(options).map(key => [key, false]));
 
-  const trackAccess = createScope((prop) => {
+  const trackAccess = createScope(prop => {
     if (Object.prototype.hasOwnProperty.call(accessMap, prop)) {
       accessMap[prop] = true;
     }

@@ -1,1 +1,1 @@
-export * from "./Interval";
+export * from './Interval';

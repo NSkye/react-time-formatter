@@ -1,35 +1,30 @@
-import {
-  readCalendarToken,
-  writeCalendarToken,
-} from "@entities/date-time/read-write";
+import { readCalendarToken, writeCalendarToken } from '@entities/date-time/read-write';
 import {
   RelativeTimeBreakdown,
   RelativeTimeConfig,
-  relativeTimeUnitToMs,
   STABLE_TIME_UNITS,
-} from "@entities/relative-time";
-import { TimezoneOffsetResolver } from "@entities/timezone";
+  relativeTimeUnitToMs,
+} from '@entities/relative-time';
+import { TimezoneOffsetResolver } from '@entities/timezone';
 
 export const breakdownInterval = (
   dates: [Date | number, Date | number],
   config: RelativeTimeConfig,
-  timezoneOffsetResolver: TimezoneOffsetResolver,
+  timezoneOffsetResolver: TimezoneOffsetResolver
 ) => {
   const [from, to] = dates
-    .map((date) => (date instanceof Date ? date.valueOf() : date))
+    .map(date => (date instanceof Date ? date.valueOf() : date))
     .sort((a, b) => a - b);
 
   const changeYear = (date: Date, year: number) =>
-    writeCalendarToken(date, "year", year, timezoneOffsetResolver(date));
+    writeCalendarToken(date, 'year', year, timezoneOffsetResolver(date));
 
-  const readYear = (date: Date) =>
-    readCalendarToken(date, "year", timezoneOffsetResolver(date));
+  const readYear = (date: Date) => readCalendarToken(date, 'year', timezoneOffsetResolver(date));
 
   const changeMonth = (date: Date, monthIndex: number) =>
-    writeCalendarToken(date, "month", monthIndex, timezoneOffsetResolver(date));
+    writeCalendarToken(date, 'month', monthIndex, timezoneOffsetResolver(date));
 
-  const readMonth = (date: Date) =>
-    readCalendarToken(date, "month", timezoneOffsetResolver(date));
+  const readMonth = (date: Date) => readCalendarToken(date, 'month', timezoneOffsetResolver(date));
 
   const result: RelativeTimeBreakdown = {
     years: 0,

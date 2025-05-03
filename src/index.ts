@@ -1,5 +1,5 @@
-import { Interval } from "./interval/react";
-import { Duration } from "./duration/react";
-import { DateTime } from "./date-time/react/DateTime";
+import { DateTime } from './date-time/react/DateTime';
+import { Duration } from './duration/react';
+import { Interval } from './interval/react';
 
 export { Interval, Duration, DateTime };
