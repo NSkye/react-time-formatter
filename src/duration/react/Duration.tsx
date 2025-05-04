@@ -1,7 +1,6 @@
 import React, { ReactNode, memo, useRef } from 'react';
 
 import {
-  RelativeTimeBreakdownInput,
   RelativeTimeConfig,
   normalizeRelativeTimeConfig,
   relativeTimeBreakdownToMilliseconds,
@@ -10,12 +9,12 @@ import {
 import { spyOnPropertyAccess } from '@shared/access-tracker';
 
 import { breakdownDuration } from '../core/breakdown';
+import { DurationOutput, accessedToConfig, breakdownToOutput } from '../core/extend';
 import { satisfiesDurationConfig } from '../core/satisfies-config';
-import { DurationBreakdownOutput, configFromAccessed } from '../core/units';
 
 interface DurationProps {
-  value: number | RelativeTimeBreakdownInput;
-  children: (breakdown: DurationBreakdownOutput) => ReactNode;
+  value: number;
+  children: (breakdown: DurationOutput) => ReactNode;
 }
 
 const defaultConfig = {
@@ -37,14 +36,14 @@ export const Duration = memo(({ value, children }: DurationProps): JSX.Element =
 
   const render = (config: RelativeTimeConfig) => {
     const breakdown = breakdownDuration(ms, normalizeRelativeTimeConfig(config));
+    const output = breakdownToOutput(ms, breakdown);
 
-    const [result, accessed] = spyOnPropertyAccess<
-      ReactNode,
-      DurationBreakdownOutput,
-      typeof children
-    >(breakdown, children);
+    const [result, accessed] = spyOnPropertyAccess<ReactNode, DurationOutput, typeof children>(
+      output,
+      children
+    );
 
-    return [result, breakdown, configFromAccessed(accessed)] as const;
+    return [result, breakdown, accessedToConfig(accessed)] as const;
   };
 
   const [naiveResult, naiveBreakdown, newConfig] = render(lastConfig);

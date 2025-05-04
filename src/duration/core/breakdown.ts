@@ -5,12 +5,10 @@ import {
   relativeTimeUnitToMs,
 } from '@entities/relative-time';
 
-import { DurationBreakdownOutput, FORMATTING_ALIASES, TOTALS, extendBreakdown } from './units';
-
 export const breakdownDuration = (
   ms: number,
   config: RelativeTimeConfig
-): DurationBreakdownOutput => {
+): RelativeTimeBreakdown => {
   const result: RelativeTimeBreakdown = {
     years: 0,
     months: 0,
@@ -30,12 +28,5 @@ export const breakdownDuration = (
     }
   }
 
-  return extendBreakdown(ms, result);
-};
-
-export const generateInvalidatedBreakdown = () => {
-  const numericals = [...RELATIVE_TIME_UNITS, ...TOTALS].map(key => [key, NaN]);
-  const strings = FORMATTING_ALIASES.map(key => [key, `${key}-Invalid`]);
-
-  return Object.fromEntries([...numericals, ...strings]) as DurationBreakdownOutput;
+  return result;
 };
