@@ -1,7 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
 import {
-  RelativeTimeBreakdownOutput,
   normalizeRelativeTimeBreakdown,
   normalizeRelativeTimeConfig,
   relativeTimeBreakdownToMilliseconds,
@@ -168,30 +167,9 @@ describe('relativeTimeBreakdownsAreEqual', () => {
     const b = { hours: 0, minutes: 30 };
     expect(relativeTimeBreakdownsAreEqual(a, b)).toBe(true);
   });
-
-  test('compares totals if totalMilliseconds present', () => {
-    const a = { totalMilliseconds: 90000 } as RelativeTimeBreakdownOutput;
-    const b = { totalMilliseconds: 90000 } as RelativeTimeBreakdownOutput;
-
-    expect(relativeTimeBreakdownsAreEqual(a, b)).toBe(true);
-  });
-
-  test('ignores totals if only one has them', () => {
-    const a = { totalMilliseconds: 90000 } as RelativeTimeBreakdownOutput;
-    const b = { minutes: 1, seconds: 30 };
-    expect(relativeTimeBreakdownsAreEqual(a, b)).toBe(false);
-  });
 });
 
 describe('relativeTimeBreakdownToMilliseconds', () => {
-  test('returns totalMilliseconds if provided', () => {
-    const breakdown = {
-      totalMilliseconds: 60000,
-    } as RelativeTimeBreakdownOutput;
-
-    expect(relativeTimeBreakdownToMilliseconds(breakdown)).toBe(60000);
-  });
-
   test('computes timestamp from unit breakdown', () => {
     const breakdown = { minutes: 2, seconds: 30 }; // 150000 ms
     expect(relativeTimeBreakdownToMilliseconds(breakdown)).toBe(150000);

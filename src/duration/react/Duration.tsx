@@ -1,19 +1,21 @@
 import React, { ReactNode, memo, useRef } from 'react';
 
 import {
-  RelativeTimeBreakdown,
+  RelativeTimeBreakdownInput,
   RelativeTimeConfig,
   normalizeRelativeTimeConfig,
+  relativeTimeBreakdownToMilliseconds,
 } from '@entities/relative-time';
 
 import { spyOnPropertyAccess } from '@shared/access-tracker';
 
 import { breakdownDuration } from '../core/breakdown';
 import { satisfiesDurationConfig } from '../core/satisfies-config';
+import { DurationBreakdownOutput, configFromAccessed } from '../core/units';
 
 interface DurationProps {
-  ms: number;
-  children: (breakdown: RelativeTimeBreakdown) => ReactNode;
+  value: number | RelativeTimeBreakdownInput;
+  children: (breakdown: DurationBreakdownOutput) => ReactNode;
 }
 
 const defaultConfig = {
@@ -27,20 +29,22 @@ const defaultConfig = {
   milliseconds: true,
 };
 
-export const Duration = memo(({ ms, children }: DurationProps): JSX.Element => {
+export const Duration = memo(({ value, children }: DurationProps): JSX.Element => {
   const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
   const lastConfig = lastConfigRef.current;
+
+  const ms = typeof value === 'object' ? relativeTimeBreakdownToMilliseconds(value) : value;
 
   const render = (config: RelativeTimeConfig) => {
     const breakdown = breakdownDuration(ms, normalizeRelativeTimeConfig(config));
 
-    const [result, newConfig] = spyOnPropertyAccess<
+    const [result, accessed] = spyOnPropertyAccess<
       ReactNode,
-      RelativeTimeBreakdown,
+      DurationBreakdownOutput,
       typeof children
     >(breakdown, children);
 
-    return [result, breakdown, newConfig] as const;
+    return [result, breakdown, configFromAccessed(accessed)] as const;
   };
 
   const [naiveResult, naiveBreakdown, newConfig] = render(lastConfig);

@@ -8,22 +8,6 @@ export type RelativeTimeBreakdown = Record<RelativeTimeUnit, number>;
 export type RelativeTimeConfig = Record<keyof RelativeTimeBreakdown, boolean>;
 
 /**
- * Output superset
- */
-
-export type RelativeTimeTotals = {
-  totalYears: number;
-  totalMonths: number;
-  totalWeeks: number;
-  totalDays: number;
-  totalHours: number;
-  totalMinutes: number;
-  totalSeconds: number;
-  totalMilliseconds: number;
-};
-export type RelativeTimeBreakdownOutput = RelativeTimeBreakdown & RelativeTimeTotals;
-
-/**
  * Input subset
  */
 
@@ -74,18 +58,9 @@ export const normalizeRelativeTimeConfig = (config: RelativeTimeConfig): Relativ
 /** Comparisons */
 
 export const relativeTimeBreakdownsAreEqual = (
-  breakdownA: RelativeTimeBreakdown | RelativeTimeBreakdownOutput | RelativeTimeBreakdownInput,
-  breakdownB: RelativeTimeBreakdown | RelativeTimeBreakdownOutput | RelativeTimeBreakdownInput
+  breakdownA: RelativeTimeBreakdown | RelativeTimeBreakdownInput,
+  breakdownB: RelativeTimeBreakdown | RelativeTimeBreakdownInput
 ) => {
-  if (
-    Object.prototype.hasOwnProperty.call(breakdownA, 'totalMilliseconds') &&
-    Object.prototype.hasOwnProperty.call(breakdownB, 'totalMilliseconds')
-  )
-    return (
-      (breakdownA as RelativeTimeBreakdownOutput).totalMilliseconds ===
-      (breakdownB as RelativeTimeBreakdownOutput).totalMilliseconds
-    );
-
   for (const unit of RELATIVE_TIME_UNITS) {
     if ((breakdownA[unit] ?? 0) !== (breakdownB[unit] ?? 0)) return false;
   }
@@ -96,12 +71,8 @@ export const relativeTimeBreakdownsAreEqual = (
 /** Conversions */
 
 export const relativeTimeBreakdownToMilliseconds = (
-  breakdown: RelativeTimeBreakdown | RelativeTimeBreakdownOutput | RelativeTimeBreakdownInput
+  breakdown: RelativeTimeBreakdown | RelativeTimeBreakdownInput
 ) => {
-  if (Object.prototype.hasOwnProperty.call(breakdown, 'totalMilliseconds')) {
-    return (breakdown as RelativeTimeBreakdownOutput).totalMilliseconds;
-  }
-
   let sum = 0;
   for (const unit of RELATIVE_TIME_UNITS) {
     const value = breakdown[unit] ?? 0;
