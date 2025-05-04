@@ -1,10 +1,10 @@
 import React, { ReactNode, memo, useRef } from 'react';
 
 import {
-  DateTimeBreakdownInput,
-  inferDateFromDateTimeBreakdown,
-  isValidDateTimeBreakdown,
-} from '@entities/date-time';
+  CalendarDateBreakdownInput,
+  inferDateFromCalendarDateBreakdown,
+  isValidCalendarDateBreakdown,
+} from '@entities/calendar-date';
 import { RelativeTimeConfig } from '@entities/relative-time';
 import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
 
@@ -34,8 +34,8 @@ const defaultConfig = {
 } satisfies RelativeTimeConfig;
 
 export interface IntervalProps {
-  from: Date | DateTimeBreakdownInput | string | number;
-  to: Date | DateTimeBreakdownInput | string | number;
+  from: Date | CalendarDateBreakdownInput | string | number;
+  to: Date | CalendarDateBreakdownInput | string | number;
   timezoneOffset?: 'UTC' | 'Local' | TimezoneOffsetResolver | number;
   children: (breakdown: IntervalOutput) => ReactNode;
 }
@@ -52,7 +52,7 @@ export const Interval = memo(
         if (date instanceof Date) return date;
         if (typeof date === 'string') return new Date(date);
         if (typeof date === 'number') return new Date(date);
-        if (isValidDateTimeBreakdown(date)) return inferDateFromDateTimeBreakdown(date);
+        if (isValidCalendarDateBreakdown(date)) return inferDateFromCalendarDateBreakdown(date);
         return new Date(NaN);
       })
       .sort((dateA, dateB) => dateA.valueOf() - dateB.valueOf());

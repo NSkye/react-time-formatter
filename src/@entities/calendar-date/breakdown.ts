@@ -4,7 +4,7 @@ import { CALENDAR_TOKENS, CalendarToken } from './tokens';
 
 // Base entities
 
-interface DateTimeBreakdownBase extends Omit<Partial<Record<CalendarToken, number>>, 'day'> {
+interface CalendarDateBreakdownBase extends Omit<Partial<Record<CalendarToken, number>>, 'day'> {
   year?: number;
   month?: number;
   date?: number;
@@ -16,47 +16,49 @@ interface DateTimeBreakdownBase extends Omit<Partial<Record<CalendarToken, numbe
   timezoneOffset?: number | 'UTC' | 'Local';
 }
 
-interface DateTimeBreakdownYear extends DateTimeBreakdownBase {
+interface CalendarDateBreakdownYear extends CalendarDateBreakdownBase {
   year: number;
 }
-interface DateTimeBreakdownMonth extends DateTimeBreakdownYear {
+interface CalendarDateBreakdownMonth extends CalendarDateBreakdownYear {
   month: number;
 }
-interface DateTimeBreakdownDate extends DateTimeBreakdownMonth {
+interface CalendarDateBreakdownDate extends CalendarDateBreakdownMonth {
   date: number;
 }
-interface DateTimeBreakdownHours extends DateTimeBreakdownDate {
+interface CalendarDateBreakdownHours extends CalendarDateBreakdownDate {
   hours: number;
 }
-interface DateTimeBreakdownMinutes extends DateTimeBreakdownHours {
+interface CalendarDateBreakdownMinutes extends CalendarDateBreakdownHours {
   minutes: number;
 }
-interface DateTimeBreakdownSeconds extends DateTimeBreakdownMinutes {
+interface CalendarDateBreakdownSeconds extends CalendarDateBreakdownMinutes {
   seconds: number;
 }
-interface DateTimeBreakdownMilliseconds extends DateTimeBreakdownSeconds {
+interface CalendarDateBreakdownMilliseconds extends CalendarDateBreakdownSeconds {
   milliseconds: number;
 }
 
 // Input subset
 
-export type DateTimeBreakdownInput =
-  | DateTimeBreakdownYear
-  | DateTimeBreakdownMonth
-  | DateTimeBreakdownDate
-  | DateTimeBreakdownHours
-  | DateTimeBreakdownMinutes
-  | DateTimeBreakdownSeconds
-  | DateTimeBreakdownMilliseconds;
+export type CalendarDateBreakdownInput =
+  | CalendarDateBreakdownYear
+  | CalendarDateBreakdownMonth
+  | CalendarDateBreakdownDate
+  | CalendarDateBreakdownHours
+  | CalendarDateBreakdownMinutes
+  | CalendarDateBreakdownSeconds
+  | CalendarDateBreakdownMilliseconds;
 
 // Full type
 
-export interface DateTimeBreakdown extends DateTimeBreakdownMilliseconds {
+export interface CalendarDateBreakdown extends CalendarDateBreakdownMilliseconds {
   day: number;
   timezoneOffset: number;
 }
 
-export const isValidDateTimeBreakdown = (input: unknown): input is DateTimeBreakdownInput => {
+export const isValidCalendarDateBreakdown = (
+  input: unknown
+): input is CalendarDateBreakdownInput => {
   if (typeof input !== 'object') return false;
   if (input === null) return false;
 
@@ -93,7 +95,7 @@ export const isValidDateTimeBreakdown = (input: unknown): input is DateTimeBreak
   return true;
 };
 
-export const inferDateFromDateTimeBreakdown = (input: DateTimeBreakdownInput): Date => {
+export const inferDateFromCalendarDateBreakdown = (input: CalendarDateBreakdownInput): Date => {
   const {
     year,
     month = 1,

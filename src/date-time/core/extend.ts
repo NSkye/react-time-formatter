@@ -1,4 +1,4 @@
-import { DateTimeBreakdown } from '@entities/date-time';
+import { CalendarDateBreakdown } from '@entities/calendar-date';
 
 import { timezoneOffsetToUTCRepresentation } from '@shared/date-math';
 import { stringifyInteger } from '@shared/stringify-number';
@@ -28,17 +28,17 @@ type FormatAliases = [
 ];
 
 export type FormatAlias = FormatAliases[number];
-export type DateTimeOutput = DateTimeBreakdown & Record<FormatAlias, string>;
+export type DateTimeOutput = CalendarDateBreakdown & Record<FormatAlias, string>;
 
 /**
- * Adds formatting aliases to DateTimeBreakdown
+ * Adds formatting aliases to CalendarDateBreakdown
  * @param breakdown
  * @returns
  */
-export const breakdownToOutput = (breakdown: DateTimeBreakdown): DateTimeOutput => {
+export const breakdownToOutput = (breakdown: CalendarDateBreakdown): DateTimeOutput => {
   const { timezoneOffset } = breakdown;
 
-  const output: DateTimeBreakdown & Partial<Record<FormatAlias, string>> = {
+  const output: CalendarDateBreakdown & Partial<Record<FormatAlias, string>> = {
     ...breakdown,
     Z: timezoneOffsetToUTCRepresentation(timezoneOffset, ':'),
     ZZ: timezoneOffsetToUTCRepresentation(timezoneOffset, ''),
@@ -66,5 +66,5 @@ export const breakdownToOutput = (breakdown: DateTimeBreakdown): DateTimeOutput 
   [output.s, output.ss] = stringifyInteger(breakdown.seconds);
   [, , output.SSS] = stringifyInteger(breakdown.milliseconds);
 
-  return output as DateTimeBreakdown & Record<FormatAlias, string>;
+  return output as CalendarDateBreakdown & Record<FormatAlias, string>;
 };

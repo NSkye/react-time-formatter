@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { readCalendarToken, writeCalendarToken } from '@entities/date-time';
+import { readCalendarToken, writeCalendarToken } from '@entities/calendar-date';
 
 describe('readCalendarToken', () => {
   const berlinOffsetBeforeDST = -60; // UTC+1

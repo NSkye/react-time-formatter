@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { CALENDAR_TOKENS, isCalendarToken } from '@entities/date-time';
+import { CALENDAR_TOKENS, isCalendarToken } from '@entities/calendar-date';
 
 describe('isCalendarToken consistent with CALENDAR_TOKENS', () => {
   test.each(CALENDAR_TOKENS)('token "%s" should pass isCalendarToken', token => {

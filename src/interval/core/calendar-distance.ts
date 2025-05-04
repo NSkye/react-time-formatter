@@ -1,4 +1,4 @@
-import { readCalendarToken, writeCalendarToken } from '@entities/date-time';
+import { readCalendarToken, writeCalendarToken } from '@entities/calendar-date';
 import { TimezoneOffsetResolver } from '@entities/timezone';
 
 /**

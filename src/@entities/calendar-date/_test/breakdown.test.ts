@@ -1,11 +1,11 @@
 import {
-  inferDateFromDateTimeBreakdown,
-  isValidDateTimeBreakdown,
-} from '@entities/date-time/breakdown';
+  inferDateFromCalendarDateBreakdown,
+  isValidCalendarDateBreakdown,
+} from '@entities/calendar-date/breakdown';
 
-describe('inferDateFromDateTimeBreakdown', () => {
+describe('inferDateFromCalendarDateBreakdown', () => {
   test('constructs correct local date', () => {
-    const d = inferDateFromDateTimeBreakdown({
+    const d = inferDateFromCalendarDateBreakdown({
       year: 2025,
       month: 4,
       date: 20,
@@ -19,7 +19,7 @@ describe('inferDateFromDateTimeBreakdown', () => {
   });
 
   test('constructs correct UTC date', () => {
-    const d = inferDateFromDateTimeBreakdown({
+    const d = inferDateFromCalendarDateBreakdown({
       year: 2025,
       month: 4,
       date: 20,
@@ -35,7 +35,7 @@ describe('inferDateFromDateTimeBreakdown', () => {
   });
 
   test('applies custom numeric timezone offset', () => {
-    const d = inferDateFromDateTimeBreakdown({
+    const d = inferDateFromCalendarDateBreakdown({
       year: 2025,
       month: 4,
       date: 20,
@@ -54,7 +54,7 @@ describe('inferDateFromDateTimeBreakdown', () => {
      */
     const localDate = new Date();
 
-    const d = inferDateFromDateTimeBreakdown({
+    const d = inferDateFromCalendarDateBreakdown({
       // apply offset as specified by date
       timezoneOffset: localDate.getTimezoneOffset(),
 
@@ -72,7 +72,7 @@ describe('inferDateFromDateTimeBreakdown', () => {
   });
 });
 
-describe('isValidDateTimeBreakdown', () => {
+describe('isValidCalendarDateBreakdown', () => {
   test.each([
     { year: 2025 },
     { year: 2025, month: 10 },
@@ -80,7 +80,7 @@ describe('isValidDateTimeBreakdown', () => {
     { year: 2025, month: 10, date: 12, hours: 15 },
     { year: 2025, month: 10, date: 12, hours: 15, minutes: 15, seconds: 15, milliseconds: 10 },
   ])('defining sensible dates resolves to true', date => {
-    expect(isValidDateTimeBreakdown(date)).toBe(true);
+    expect(isValidCalendarDateBreakdown(date)).toBe(true);
   });
 
   test.each([
@@ -89,7 +89,7 @@ describe('isValidDateTimeBreakdown', () => {
     { year: 2025, timezoneOffset: +180 },
     { year: 2025, timezoneOffset: -180 },
   ])('correctly asserts timezone offset', date => {
-    expect(isValidDateTimeBreakdown(date)).toBe(true);
+    expect(isValidCalendarDateBreakdown(date)).toBe(true);
   });
 
   test.each([
@@ -98,7 +98,7 @@ describe('isValidDateTimeBreakdown', () => {
     { milliseconds: 10, seconds: 15, minutes: 15 },
     { milliseconds: 10, seconds: 15, minutes: 15, year: 2025 },
   ])('defining dates in nonsensical ways  resolves to false', date => {
-    expect(isValidDateTimeBreakdown(date)).toBe(false);
+    expect(isValidCalendarDateBreakdown(date)).toBe(false);
   });
 
   test.each([
@@ -121,13 +121,13 @@ describe('isValidDateTimeBreakdown', () => {
     { year: 2025, timezoneOffset: -Infinity },
     { year: 2025, timezoneOffset: null },
   ])('having junk in date-token fileds resolves to false', date => {
-    expect(isValidDateTimeBreakdown(date)).toBe(false);
+    expect(isValidCalendarDateBreakdown(date)).toBe(false);
   });
 
   test.each([() => {}, 10, null, NaN, undefined])(
     'passing entirely wrong type resolves to false',
     date => {
-      expect(isValidDateTimeBreakdown(date)).toBe(false);
+      expect(isValidCalendarDateBreakdown(date)).toBe(false);
     }
   );
 });
