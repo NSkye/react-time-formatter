@@ -61,14 +61,10 @@ export const isValidDateTimeBreakdown = (input: unknown): input is DateTimeBreak
   if (input === null) return false;
 
   if (Object.prototype.hasOwnProperty.call(input, 'timezoneOffset')) {
-    const offset = input['timezoneOffset' as keyof unknown];
-
-    if (
-      offset !== 'Local' &&
-      offset !== 'UTC' &&
-      (offset !== 'number' || offset === -Infinity || offset === Infinity || isNaN(offset))
-    )
-      return false;
+    const offset = input['timezoneOffset' as keyof unknown] as unknown;
+    if (typeof offset === 'number') {
+      if (offset === -Infinity || offset === Infinity || isNaN(offset)) return false;
+    } else if (offset !== 'Local' && offset !== 'UTC') return false;
   }
 
   let skippable = true;
@@ -81,7 +77,7 @@ export const isValidDateTimeBreakdown = (input: unknown): input is DateTimeBreak
     if (!hasToken && !skippable && token !== 'day') return false;
 
     if (hasToken) {
-      skippable = token !== 'day';
+      skippable = token === 'day';
 
       const tokenValue = input[token as keyof unknown] as unknown;
       const isValidValue =
