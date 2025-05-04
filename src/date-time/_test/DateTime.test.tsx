@@ -38,7 +38,7 @@ describe('DateTime', () => {
   });
 
   test('renders date with timezone offset correctly', () => {
-    const expected = '2025.04.02 12:00';
+    const expected = '2025.04.02 12:00 UTC+02:00';
     const UTCPlus2 = -120; // UTC+2;
 
     render(
@@ -52,8 +52,8 @@ describe('DateTime', () => {
         }}
         timezoneOffset={UTCPlus2}
       >
-        {({ year, month, date, hours, minutes }) => (
-          <span data-testid="time">{`${year}.${String(month).padStart(2, '0')}.${String(date).padStart(2, '0')} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`}</span>
+        {t => (
+          <span data-testid="time">{`${t.YYYY}.${t.MM}.${t.DD} ${t.HH}:${t.mm} UTC${t.Z}`}</span>
         )}
       </DateTime>
     );

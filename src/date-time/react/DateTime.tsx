@@ -1,12 +1,10 @@
-import React, { ReactNode, memo, useMemo } from 'react';
+import React, { ReactNode, memo } from 'react';
 
-import {
-  CALENDAR_TOKENS,
-  DateTimeBreakdownInput,
-  DateTimeBreakdownOutput,
-} from '@entities/date-time';
-import { inferDateFromDateTimeBreakdown, readCalendarToken } from '@entities/date-time/read-write';
+import { DateTimeBreakdownInput } from '@entities/date-time';
+import { inferDateFromDateTimeBreakdown } from '@entities/date-time/read-write';
 import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
+
+import { DateTimeBreakdownOutput, breakdownDateTime } from '../core/breakdown';
 
 interface DateTimeProps {
   date: Date | DateTimeBreakdownInput | string | number;
@@ -27,17 +25,7 @@ export const DateTime = memo(
     const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
     const timezoneOffsetMinutes = timezoneOffsetResolver(dateObj);
 
-    const breakdown = useMemo(() => {
-      const breakdownResult: Partial<DateTimeBreakdownOutput> = {
-        timezoneOffset: timezoneOffsetMinutes,
-      };
-
-      for (const token of CALENDAR_TOKENS) {
-        breakdownResult[token] = readCalendarToken(dateObj, token, timezoneOffsetMinutes);
-      }
-
-      return breakdownResult as DateTimeBreakdownOutput;
-    }, [dateObj, timezoneOffsetMinutes]);
+    const breakdown = breakdownDateTime(dateObj, timezoneOffsetMinutes);
 
     return <>{children(breakdown)}</>;
   }

@@ -36,13 +36,6 @@ interface DateTimeBreakdownMilliseconds extends DateTimeBreakdownSeconds {
   milliseconds: number;
 }
 
-// Output superset
-
-export interface DateTimeBreakdownOutput extends DateTimeBreakdownMilliseconds {
-  day: number;
-  timezoneOffset: number;
-}
-
 // Input subset
 
 export type DateTimeBreakdownInput =
@@ -53,3 +46,10 @@ export type DateTimeBreakdownInput =
   | DateTimeBreakdownMinutes
   | DateTimeBreakdownSeconds
   | DateTimeBreakdownMilliseconds;
+
+// Full type
+
+export interface DateTimeBreakdown extends DateTimeBreakdownMilliseconds {
+  day: number;
+  timezoneOffset: number;
+}
