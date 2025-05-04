@@ -1,4 +1,3 @@
-import { readCalendarToken, writeCalendarToken } from '@entities/date-time/read-write';
 import {
   RelativeTimeBreakdown,
   RelativeTimeConfig,
@@ -7,24 +6,14 @@ import {
 } from '@entities/relative-time';
 import { TimezoneOffsetResolver } from '@entities/timezone';
 
+import { calendarDistance } from './calendar-distance';
+
 export const breakdownInterval = (
-  dates: [Date | number, Date | number],
+  fromTo: [Date, Date],
   config: RelativeTimeConfig,
   timezoneOffsetResolver: TimezoneOffsetResolver
 ) => {
-  const [from, to] = dates
-    .map(date => (date instanceof Date ? date.valueOf() : date))
-    .sort((a, b) => a - b);
-
-  const changeYear = (date: Date, year: number) =>
-    writeCalendarToken(date, 'year', year, timezoneOffsetResolver(date));
-
-  const readYear = (date: Date) => readCalendarToken(date, 'year', timezoneOffsetResolver(date));
-
-  const changeMonth = (date: Date, monthIndex: number) =>
-    writeCalendarToken(date, 'month', monthIndex, timezoneOffsetResolver(date));
-
-  const readMonth = (date: Date) => readCalendarToken(date, 'month', timezoneOffsetResolver(date));
+  const [from, to] = fromTo;
 
   const result: RelativeTimeBreakdown = {
     years: 0,
@@ -40,36 +29,18 @@ export const breakdownInterval = (
   let cursor = new Date(from);
 
   if (config.years) {
-    let next = new Date(cursor);
-    const isOverflow = () => next.valueOf() > to;
-
-    while (!isOverflow()) {
-      next = changeYear(next, readYear(next) + 1);
-
-      if (!isOverflow()) {
-        cursor = next;
-        next = new Date(cursor);
-        result.years++;
-      }
-    }
+    const [years, nextCursor] = calendarDistance([cursor, to], 'year', timezoneOffsetResolver);
+    result.years = years;
+    cursor = nextCursor;
   }
 
   if (config.months) {
-    let next = new Date(cursor);
-    const isOverflow = () => next.valueOf() > to;
-
-    while (!isOverflow()) {
-      next = changeMonth(next, readMonth(next) + 1);
-
-      if (!isOverflow()) {
-        cursor = next;
-        next = new Date(cursor);
-        result.months++;
-      }
-    }
+    const [months, nextCursor] = calendarDistance([cursor, to], 'month', timezoneOffsetResolver);
+    result.months = months;
+    cursor = nextCursor;
   }
 
-  let remainder = to - cursor.valueOf();
+  let remainder = to.valueOf() - cursor.valueOf();
   for (const unit of STABLE_TIME_UNITS) {
     if (config[unit]) {
       result[unit] = Math.floor(remainder / relativeTimeUnitToMs(unit));
