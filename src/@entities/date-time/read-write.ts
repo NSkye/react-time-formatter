@@ -1,7 +1,6 @@
 import { contextify } from '@shared/contextify';
 import { MINUTE } from '@shared/time-primitives';
 
-import { DateTimeBreakdownInput } from './breakdown';
 import { CalendarToken } from './tokens';
 
 const utcGetters = {
@@ -60,26 +59,4 @@ export const readCalendarToken = (
 
   // Read UTC time from reference date
   return tokenGetter(referenceDate);
-};
-
-export const inferDateFromDateTimeBreakdown = (input: DateTimeBreakdownInput): Date => {
-  const {
-    year,
-    month = 1,
-    date = 1,
-    hours = 0,
-    minutes = 0,
-    seconds = 0,
-    milliseconds = 0,
-    timezoneOffset = 'Local',
-  } = input;
-
-  if (timezoneOffset === 'Local')
-    return new Date(year, month - 1, date, hours, minutes, seconds, milliseconds);
-
-  const offsetInMinutes = timezoneOffset === 'UTC' ? 0 : timezoneOffset;
-
-  const utcTimestamp = Date.UTC(year, month - 1, date, hours, minutes, seconds, milliseconds);
-
-  return new Date(utcTimestamp + offsetInMinutes * MINUTE);
 };

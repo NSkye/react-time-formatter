@@ -1,32 +1,39 @@
 import React, { ReactNode, memo } from 'react';
 
 import { DateTimeBreakdownInput } from '@entities/date-time';
-import { inferDateFromDateTimeBreakdown } from '@entities/date-time/read-write';
+import {
+  inferDateFromDateTimeBreakdown,
+  isValidDateTimeBreakdown,
+} from '@entities/date-time/breakdown';
 import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
 
-import { DateTimeBreakdownOutput, breakdownDateTime } from '../core/breakdown';
+import { breakdownDateTime } from '../core/breakdown';
+import { DateTimeOutput, breakdownToOutput } from '../core/extend';
 
 interface DateTimeProps {
   date: Date | DateTimeBreakdownInput | string | number;
   timezoneOffset?: 'UTC' | 'Local' | number | TimezoneOffsetResolver;
-  children: (breakdown: DateTimeBreakdownOutput) => ReactNode;
+  children: (breakdown: DateTimeOutput) => ReactNode;
 }
 
 export const DateTime = memo(
   ({ date, timezoneOffset = 'Local', children }: DateTimeProps): JSX.Element => {
-    const dateObj = (() => {
+    const dateObject = (() => {
       if (date instanceof Date) return date;
       if (typeof date === 'string') return new Date(date);
       if (typeof date === 'number') return new Date(date);
+      if (isValidDateTimeBreakdown(date)) return inferDateFromDateTimeBreakdown(date);
 
-      return inferDateFromDateTimeBreakdown(date);
+      // Invalidate manually
+      return new Date(NaN);
     })();
 
     const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
-    const timezoneOffsetMinutes = timezoneOffsetResolver(dateObj);
+    const timezoneOffsetMinutes = timezoneOffsetResolver(dateObject);
 
-    const breakdown = breakdownDateTime(dateObj, timezoneOffsetMinutes);
+    const breakdown = breakdownDateTime(dateObject, timezoneOffsetMinutes);
+    const output = breakdownToOutput(breakdown);
 
-    return <>{children(breakdown)}</>;
+    return <>{children(output)}</>;
   }
 );

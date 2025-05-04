@@ -74,4 +74,51 @@ describe('DateTime', () => {
 
     expect(screen.getByTestId('time').textContent).toBe('1969');
   });
+
+  test('renders all aliases correctly', () => {
+    render(
+      <DateTime
+        date={{
+          year: 1989,
+          month: 2,
+          date: 9,
+          hours: 15,
+          minutes: 45,
+          seconds: 54,
+          milliseconds: 898,
+          timezoneOffset: 'UTC',
+        }}
+        timezoneOffset="UTC"
+      >
+        {t => (
+          <div>
+            <span data-testid="timeA">
+              year {t.year} month {t.month} date {t.date} day {t.day} hours {t.hours} minutes{' '}
+              {t.minutes} seconds {t.seconds} milliseconds {t.milliseconds} {t.timezoneOffset}
+            </span>
+            <span data-testid="timeB">
+              {t.YYYY}-{t.MM}-{t.DD} {t.HH}:{t.mm}:{t.ss}.{t.SSS} {t.Z}
+            </span>
+            <span data-testid="timeC">
+              {t.M}/{t.D} '{t.YY} {t.hh}:{t.mm} {t.A} UTC{t.ZZ}
+            </span>
+            <span data-testid="timeD">
+              {t.h}h {t.mm}m {t.a}
+            </span>
+            <span data-testid="timeE">
+              {t.H}h {t.mm}m
+            </span>
+          </div>
+        )}
+      </DateTime>
+    );
+
+    expect(screen.getByTestId('timeA').textContent).toBe(
+      'year 1989 month 2 date 9 day 4 hours 15 minutes 45 seconds 54 milliseconds 898 0'
+    );
+    expect(screen.getByTestId('timeB').textContent).toBe('1989-02-09 15:45:54.898 Z');
+    expect(screen.getByTestId('timeC').textContent).toBe("2/9 '89 03:45 PM UTC+0000");
+    expect(screen.getByTestId('timeD').textContent).toBe('3h 45m pm');
+    expect(screen.getByTestId('timeE').textContent).toBe('15h 45m');
+  });
 });
