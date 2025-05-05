@@ -2,8 +2,8 @@ import React, { ReactNode, memo, useRef } from 'react';
 
 import {
   CalendarDateBreakdownInput,
-  inferDateFromCalendarDateBreakdown,
-  isValidCalendarDateBreakdown,
+  createSafeDate,
+  inferSafeDateFromCalendarDateBreakdown,
 } from '@entities/calendar-date';
 import { RelativeTimeConfig } from '@entities/relative-time';
 import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
@@ -11,12 +11,7 @@ import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@en
 import { spyOnPropertyAccess } from '@shared/access-tracker';
 
 import { breakdownInterval } from '../core/breakdown';
-import {
-  IntervalOutput,
-  accessedToConfig,
-  breakdownToOutput,
-  generateInvalidatedOutput,
-} from '../core/extend';
+import { IntervalOutput, accessedToConfig, breakdownToOutput } from '../core/extend';
 import { satisfiesIntervalConfig } from '../core/satisfies-config';
 
 /**
@@ -47,18 +42,14 @@ export const Interval = memo(
 
     const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
 
-    const [fromDate, toDate] = [from, to]
-      .map(date => {
-        if (date instanceof Date) return date;
-        if (typeof date === 'string') return new Date(date);
-        if (typeof date === 'number') return new Date(date);
-        if (isValidCalendarDateBreakdown(date)) return inferDateFromCalendarDateBreakdown(date);
-        return new Date(NaN);
-      })
-      .sort((dateA, dateB) => dateA.valueOf() - dateB.valueOf());
+    const [fromDate, toDate] = [from, to].map(date => {
+      if (date instanceof Date) return createSafeDate(date);
+      if (typeof date === 'number') return createSafeDate(new Date(date));
+      if (typeof date === 'string') return createSafeDate(new Date(date));
+      return inferSafeDateFromCalendarDateBreakdown(date);
+    });
 
-    if (isNaN(fromDate.valueOf()) || isNaN(toDate.valueOf()))
-      return <>{children(generateInvalidatedOutput())}</>;
+    // if (!fromDate.valid || toDate.valid) return <>{children(generateInvalidatedOutput())}</>;
 
     const render = (config: RelativeTimeConfig) => {
       const breakdown = breakdownInterval([fromDate, toDate], config, timezoneOffsetResolver);

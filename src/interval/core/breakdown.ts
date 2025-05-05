@@ -1,3 +1,4 @@
+import { SafeDate, createSafeDate } from '@entities/calendar-date';
 import {
   RelativeTimeBreakdown,
   RelativeTimeConfig,
@@ -9,11 +10,11 @@ import { TimezoneOffsetResolver } from '@entities/timezone';
 import { calendarDistance } from './calendar-distance';
 
 export const breakdownInterval = (
-  fromTo: [Date, Date],
+  fromTo: [SafeDate, SafeDate],
   config: RelativeTimeConfig,
   timezoneOffsetResolver: TimezoneOffsetResolver
 ) => {
-  const [from, to] = fromTo;
+  const [from, to] = [...fromTo].sort((a, b) => a.valueOf() - b.valueOf());
 
   const result: RelativeTimeBreakdown = {
     years: 0,
@@ -26,7 +27,7 @@ export const breakdownInterval = (
     milliseconds: 0,
   };
 
-  let cursor = new Date(from);
+  let cursor = createSafeDate(new Date(from));
 
   if (config.years) {
     const [years, nextCursor] = calendarDistance([cursor, to], 'year', timezoneOffsetResolver);

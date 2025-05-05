@@ -1,3 +1,4 @@
+import { SafeDate } from '@entities/calendar-date';
 import {
   RELATIVE_TIME_UNITS,
   RelativeTimeBreakdown,
@@ -67,7 +68,7 @@ export type IntervalOutput = RelativeTimeBreakdown &
 export type IntervalAccessed = Record<keyof IntervalOutput, boolean>;
 
 export const breakdownToOutput = (
-  fromTo: [Date, Date],
+  fromTo: [SafeDate, SafeDate],
   breakdown: RelativeTimeBreakdown,
   timezoneOffsetResolver: TimezoneOffsetResolver
 ): IntervalOutput => {
@@ -81,17 +82,17 @@ export const breakdownToOutput = (
   [output.H, output.HH] = stringifyInteger(breakdown.hours);
   [output.m, output.mm] = stringifyInteger(breakdown.minutes);
   [output.s, output.ss] = stringifyInteger(breakdown.seconds);
-  [output.SSS, output.SSS] = stringifyInteger(breakdown.milliseconds);
+  [, , output.SSS] = stringifyInteger(breakdown.milliseconds);
 
   [output.totalYears] = calendarDistance(fromTo, 'year', timezoneOffsetResolver);
   [output.totalMonths] = calendarDistance(fromTo, 'month', timezoneOffsetResolver);
 
-  output.totalWeeks = Math.floor(to.valueOf() - from.valueOf() / WEEK);
-  output.totalDays = Math.floor(to.valueOf() - from.valueOf() / DAY);
-  output.totalHours = Math.floor(to.valueOf() - from.valueOf() / HOUR);
-  output.totalMinutes = Math.floor(to.valueOf() - from.valueOf() / MINUTE);
-  output.totalSeconds = Math.floor(to.valueOf() - from.valueOf() / SECOND);
-  output.totalMilliseconds = Math.floor(to.valueOf() - from.valueOf() / MILLISECOND);
+  output.totalWeeks = Math.trunc((to.valueOf() - from.valueOf()) / WEEK);
+  output.totalDays = Math.trunc((to.valueOf() - from.valueOf()) / DAY);
+  output.totalHours = Math.trunc((to.valueOf() - from.valueOf()) / HOUR);
+  output.totalMinutes = Math.trunc((to.valueOf() - from.valueOf()) / MINUTE);
+  output.totalSeconds = Math.trunc((to.valueOf() - from.valueOf()) / SECOND);
+  output.totalMilliseconds = Math.trunc((to.valueOf() - from.valueOf()) / MILLISECOND);
 
   return output as IntervalOutput;
 };
@@ -112,9 +113,9 @@ export const accessedToConfig = (accessed: IntervalAccessed): RelativeTimeConfig
   return config as RelativeTimeConfig;
 };
 
-export const generateInvalidatedOutput = () => {
+/* export const generateInvalidatedOutput = () => {
   const numericals = [...RELATIVE_TIME_UNITS, ...TOTALS_ALIASES].map(key => [key, NaN]);
   const strings = FORMAT_ALIASES.map(key => [key, `${key}-Invalid`]);
 
   return Object.fromEntries([...numericals, ...strings]) as IntervalOutput;
-};
+}; */
