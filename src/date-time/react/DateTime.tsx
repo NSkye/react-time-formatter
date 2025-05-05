@@ -1,21 +1,14 @@
-import React, { ReactNode, memo } from 'react';
+import React, { memo } from 'react';
 
-import { CalendarDateBreakdownInput } from '@entities/calendar-date';
-import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
+import { createDefaultTimezoneOffsetResolver } from '@entities/timezone';
 
 import { breakdownDateTime } from '../core/breakdown';
 import { DateTimeOutput, breakdownToOutput } from '../core/extend';
-import { useNormalizedDateInput } from './input';
+import { DateTimeProps, normalizeDateInput, propsAreEqual } from './input';
 
-interface DateTimeProps {
-  date: Date | CalendarDateBreakdownInput | string | number;
-  timezoneOffset?: 'UTC' | 'Local' | number | TimezoneOffsetResolver;
-  children: (breakdown: DateTimeOutput) => ReactNode;
-}
-
-export const DateTime = memo(
+const DateTime = memo(
   ({ date, timezoneOffset = 'Local', children }: DateTimeProps): JSX.Element => {
-    const safeDate = useNormalizedDateInput(date);
+    const safeDate = normalizeDateInput(date);
 
     const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
     const timezoneOffsetMinutes = timezoneOffsetResolver(safeDate);
@@ -24,7 +17,11 @@ export const DateTime = memo(
     const output = breakdownToOutput(breakdown);
 
     return <>{children(output)}</>;
-  }
+  },
+  propsAreEqual
 );
 
+DateTime.displayName = 'DateTime';
+
+export { DateTime };
 export type { DateTimeOutput, DateTimeProps };

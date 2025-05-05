@@ -1,22 +1,13 @@
 import React, { ReactNode, memo, useRef } from 'react';
 
-import {
-  RelativeTimeBreakdownInput,
-  RelativeTimeConfig,
-  normalizeRelativeTimeConfig,
-} from '@entities/relative-time';
+import { RelativeTimeConfig, normalizeRelativeTimeConfig } from '@entities/relative-time';
 
 import { spyOnPropertyAccess } from '@shared/access-tracker';
 
 import { breakdownDuration } from '../core/breakdown';
 import { DurationOutput, accessedToConfig, breakdownToOutput } from '../core/extend';
 import { satisfiesDurationConfig } from '../core/satisfies-config';
-import { useNormalizedDurationInput } from './input';
-
-interface DurationProps {
-  value: number | RelativeTimeBreakdownInput;
-  children: (breakdown: DurationOutput) => ReactNode;
-}
+import { DurationProps, normalizeDurationInput, propsAreEqual } from './input';
 
 const defaultConfig = {
   years: true,
@@ -29,11 +20,11 @@ const defaultConfig = {
   milliseconds: true,
 };
 
-export const Duration = memo(({ value, children }: DurationProps): JSX.Element => {
+const Duration = memo(({ value, children }: DurationProps): JSX.Element => {
   const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
   const lastConfig = lastConfigRef.current;
 
-  const ms = useNormalizedDurationInput(value);
+  const ms = normalizeDurationInput(value);
 
   const render = (config: RelativeTimeConfig) => {
     const breakdown = breakdownDuration(ms, normalizeRelativeTimeConfig(config));
@@ -64,6 +55,9 @@ export const Duration = memo(({ value, children }: DurationProps): JSX.Element =
   const [result] = render(newConfig);
 
   return <>{result}</>;
-});
+}, propsAreEqual);
 
+Duration.displayName = 'Duration';
+
+export { Duration };
 export type { DurationOutput, DurationProps };

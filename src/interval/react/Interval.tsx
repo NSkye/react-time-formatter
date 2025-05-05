@@ -1,18 +1,14 @@
 import React, { ReactNode, memo, useRef } from 'react';
 
-import {
-  CalendarDateBreakdownInput,
-  createSafeDate,
-  inferSafeDateFromCalendarDateBreakdown,
-} from '@entities/calendar-date';
 import { RelativeTimeConfig } from '@entities/relative-time';
-import { TimezoneOffsetResolver, createDefaultTimezoneOffsetResolver } from '@entities/timezone';
+import { createDefaultTimezoneOffsetResolver } from '@entities/timezone';
 
 import { spyOnPropertyAccess } from '@shared/access-tracker';
 
 import { breakdownInterval } from '../core/breakdown';
 import { IntervalOutput, accessedToConfig, breakdownToOutput } from '../core/extend';
 import { satisfiesIntervalConfig } from '../core/satisfies-config';
+import { IntervalProps, normalizeInputDate, propsAreEqual } from './input';
 
 /**
  * Should satisfy most of calls
@@ -28,30 +24,17 @@ const defaultConfig = {
   milliseconds: true,
 } satisfies RelativeTimeConfig;
 
-interface IntervalProps {
-  from: Date | CalendarDateBreakdownInput | string | number;
-  to: Date | CalendarDateBreakdownInput | string | number;
-  timezoneOffset?: 'UTC' | 'Local' | TimezoneOffsetResolver | number;
-  children: (breakdown: IntervalOutput) => ReactNode;
-}
-
-export const Interval = memo(
+const Interval = memo(
   ({ from, to, timezoneOffset = 'Local', children }: IntervalProps): JSX.Element => {
     const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
     const lastConfig = lastConfigRef.current;
 
     const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
 
-    const [fromDate, toDate] = [from, to].map(date => {
-      if (date instanceof Date) return createSafeDate(date);
-      if (typeof date === 'number') return createSafeDate(new Date(date));
-      if (typeof date === 'string') return createSafeDate(new Date(date));
-      return inferSafeDateFromCalendarDateBreakdown(date);
-    });
+    const [fromDate, toDate] = [from, to].map(normalizeInputDate);
 
     const render = (config: RelativeTimeConfig) => {
       const breakdown = breakdownInterval([fromDate, toDate], config, timezoneOffsetResolver);
-
       const output = breakdownToOutput([fromDate, toDate], breakdown, timezoneOffsetResolver);
 
       const [result, accessed] = spyOnPropertyAccess<ReactNode, IntervalOutput, typeof children>(
@@ -70,7 +53,11 @@ export const Interval = memo(
     const [result] = render(newConfig);
 
     return <>{result}</>;
-  }
+  },
+  propsAreEqual
 );
 
+Interval.displayName = 'Interval';
+
+export { Interval };
 export type { IntervalOutput, IntervalProps };
