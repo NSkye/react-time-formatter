@@ -28,7 +28,7 @@ const defaultConfig = {
   milliseconds: true,
 } satisfies RelativeTimeConfig;
 
-export interface IntervalProps {
+interface IntervalProps {
   from: Date | CalendarDateBreakdownInput | string | number;
   to: Date | CalendarDateBreakdownInput | string | number;
   timezoneOffset?: 'UTC' | 'Local' | TimezoneOffsetResolver | number;
@@ -48,8 +48,6 @@ export const Interval = memo(
       if (typeof date === 'string') return createSafeDate(new Date(date));
       return inferSafeDateFromCalendarDateBreakdown(date);
     });
-
-    // if (!fromDate.valid || toDate.valid) return <>{children(generateInvalidatedOutput())}</>;
 
     const render = (config: RelativeTimeConfig) => {
       const breakdown = breakdownInterval([fromDate, toDate], config, timezoneOffsetResolver);
@@ -74,3 +72,5 @@ export const Interval = memo(
     return <>{result}</>;
   }
 );
+
+export type { IntervalOutput, IntervalProps };

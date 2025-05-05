@@ -26,3 +26,5 @@ export const DateTime = memo(
     return <>{children(output)}</>;
   }
 );
+
+export type { DateTimeOutput, DateTimeProps };

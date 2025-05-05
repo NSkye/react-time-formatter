@@ -65,3 +65,5 @@ export const Duration = memo(({ value, children }: DurationProps): JSX.Element =
 
   return <>{result}</>;
 });
+
+export type { DurationOutput, DurationProps };

@@ -14,10 +14,10 @@
       "@/*": ["./src/*"]
     },
 
-    "noEmit": false,
-    "declaration": true,
+    "noEmit": true,
+    "declaration": false,
     "declarationMap": false,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "outDir": "./dist/types",
 
     "esModuleInterop": true,
@@ -38,5 +38,5 @@
     "noUncheckedSideEffectImports": true
   },
   "include": ["src"],
-  "exclude": ["node_modules", "dist", "test"]
+  "exclude": ["node_modules", "dist"]
 }
