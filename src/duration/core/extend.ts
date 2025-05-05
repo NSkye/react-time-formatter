@@ -73,16 +73,16 @@ export const breakdownToOutput = (ms: number, breakdown: RelativeTimeBreakdown):
   [output.H, output.HH] = stringifyInteger(breakdown.hours);
   [output.m, output.mm] = stringifyInteger(breakdown.minutes);
   [output.s, output.ss] = stringifyInteger(breakdown.seconds);
-  [output.SSS, output.SSS] = stringifyInteger(breakdown.milliseconds);
+  [, , output.SSS] = stringifyInteger(breakdown.milliseconds);
 
-  output.totalYears = Math.floor(ms / YEAR);
-  output.totalMonths = Math.floor(ms / MONTH);
-  output.totalWeeks = Math.floor(ms / WEEK);
-  output.totalDays = Math.floor(ms / DAY);
-  output.totalHours = Math.floor(ms / HOUR);
-  output.totalMinutes = Math.floor(ms / MINUTE);
-  output.totalSeconds = Math.floor(ms / SECOND);
-  output.totalMilliseconds = Math.floor(ms / MILLISECOND);
+  output.totalYears = Math.trunc(ms / YEAR);
+  output.totalMonths = Math.trunc(ms / MONTH);
+  output.totalWeeks = Math.trunc(ms / WEEK);
+  output.totalDays = Math.trunc(ms / DAY);
+  output.totalHours = Math.trunc(ms / HOUR);
+  output.totalMinutes = Math.trunc(ms / MINUTE);
+  output.totalSeconds = Math.trunc(ms / SECOND);
+  output.totalMilliseconds = Math.trunc(ms / MILLISECOND);
 
   return output as DurationOutput;
 };

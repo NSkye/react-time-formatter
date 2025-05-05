@@ -180,7 +180,7 @@ describe('relativeTimeBreakdownToMilliseconds', () => {
     expect(relativeTimeBreakdownToMilliseconds(partial)).toBe(3600000);
   });
 
-  test('returns 0 if all units are missing or zero', () => {
-    expect(relativeTimeBreakdownToMilliseconds({})).toBe(0);
+  test('returns NaN if all units are missing', () => {
+    expect(relativeTimeBreakdownToMilliseconds({})).toBeNaN();
   });
 });

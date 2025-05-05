@@ -1,9 +1,9 @@
 import React, { ReactNode, memo, useRef } from 'react';
 
 import {
+  RelativeTimeBreakdownInput,
   RelativeTimeConfig,
   normalizeRelativeTimeConfig,
-  relativeTimeBreakdownToMilliseconds,
 } from '@entities/relative-time';
 
 import { spyOnPropertyAccess } from '@shared/access-tracker';
@@ -11,9 +11,10 @@ import { spyOnPropertyAccess } from '@shared/access-tracker';
 import { breakdownDuration } from '../core/breakdown';
 import { DurationOutput, accessedToConfig, breakdownToOutput } from '../core/extend';
 import { satisfiesDurationConfig } from '../core/satisfies-config';
+import { useNormalizedDurationInput } from './input';
 
 interface DurationProps {
-  value: number;
+  value: number | RelativeTimeBreakdownInput;
   children: (breakdown: DurationOutput) => ReactNode;
 }
 
@@ -32,7 +33,7 @@ export const Duration = memo(({ value, children }: DurationProps): JSX.Element =
   const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
   const lastConfig = lastConfigRef.current;
 
-  const ms = typeof value === 'object' ? relativeTimeBreakdownToMilliseconds(value) : value;
+  const ms = useNormalizedDurationInput(value);
 
   const render = (config: RelativeTimeConfig) => {
     const breakdown = breakdownDuration(ms, normalizeRelativeTimeConfig(config));

@@ -20,7 +20,7 @@ export const breakdownDuration = (
     milliseconds: 0,
   };
 
-  let remainder = ms;
+  let remainder = Math.abs(ms);
   for (const unit of RELATIVE_TIME_UNITS) {
     if (config[unit]) {
       result[unit] = Math.floor(remainder / relativeTimeUnitToMs(unit));

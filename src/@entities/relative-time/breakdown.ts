@@ -1,3 +1,6 @@
+import { isValidNumber } from '@shared/numbers';
+import { AtLeastOneKeyFrom } from '@shared/type-helpers';
+
 import { RELATIVE_TIME_UNITS, RelativeTimeUnit, relativeTimeUnitToMs } from './units';
 
 /**
@@ -11,9 +14,21 @@ export type RelativeTimeConfig = Record<keyof RelativeTimeBreakdown, boolean>;
  * Input subset
  */
 
-export type RelativeTimeBreakdownInput = Partial<RelativeTimeBreakdown>;
+export type RelativeTimeBreakdownInput = AtLeastOneKeyFrom<RelativeTimeBreakdown>;
 
 /** Normalizers */
+
+/**
+ * Returns either valid relative timestamp or NaN
+ * @param value
+ * @returns
+ */
+export const validateRelativeTimstamp = (value: unknown): number => {
+  if (!isValidNumber(value)) return NaN;
+  const truncated = Math.trunc(value);
+  if (!Number.isSafeInteger(truncated)) return NaN;
+  return truncated;
+};
 
 export const normalizeRelativeTimeBreakdown = (
   breakdown: RelativeTimeBreakdownInput
@@ -70,15 +85,40 @@ export const relativeTimeBreakdownsAreEqual = (
 
 /** Conversions */
 
-export const relativeTimeBreakdownToMilliseconds = (
-  breakdown: RelativeTimeBreakdown | RelativeTimeBreakdownInput
-) => {
+export const relativeTimeBreakdownToMilliseconds = (input: unknown): number => {
+  if (typeof input !== 'object') return NaN;
+  if (input === null) return NaN;
+
+  // treat object as input
+  const breakdown = input as RelativeTimeBreakdownInput;
+
   let sum = 0;
+  let hasAnyUnitKey = false;
   for (const unit of RELATIVE_TIME_UNITS) {
+    if (!Object.prototype.hasOwnProperty.call(breakdown, unit)) {
+      continue;
+    }
+
+    hasAnyUnitKey = true;
+
     const value = breakdown[unit] ?? 0;
+
+    if (!isValidNumber(value)) return NaN;
+
+    const truncatedValue = Math.trunc(value);
+    if (!Number.isSafeInteger(truncatedValue)) return NaN;
+
+    // safeguard against negative zero
+    const normalizedValue = truncatedValue === 0 ? 0 : truncatedValue;
+
     const multiplier = relativeTimeUnitToMs(unit);
-    sum += value * multiplier;
+    sum += normalizedValue * multiplier;
   }
+
+  // If no single unit was present, treat input as an arbitrary foreign object
+  if (!hasAnyUnitKey) return NaN;
+
+  if (!Number.isSafeInteger(sum)) return NaN;
 
   return sum;
 };
