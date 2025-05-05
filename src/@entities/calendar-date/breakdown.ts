@@ -1,5 +1,6 @@
 import { MINUTE } from '@shared/time-primitives';
 
+import { SafeDate, createInvalidatedSafeDate, createSafeDate } from './safe-date';
 import { CALENDAR_TOKENS, CalendarToken } from './tokens';
 
 // Base entities
@@ -13,7 +14,7 @@ interface CalendarDateBreakdownBase extends Omit<Partial<Record<CalendarToken, n
   seconds?: number;
   milliseconds?: number;
 
-  timezoneOffset?: number | 'UTC' | 'Local';
+  timezoneOffset?: number;
 }
 
 interface CalendarDateBreakdownYear extends CalendarDateBreakdownBase {
@@ -64,9 +65,10 @@ export const isValidCalendarDateBreakdown = (
 
   if (Object.prototype.hasOwnProperty.call(input, 'timezoneOffset')) {
     const offset = input['timezoneOffset' as keyof unknown] as unknown;
-    if (typeof offset === 'number') {
-      if (offset === -Infinity || offset === Infinity || isNaN(offset)) return false;
-    } else if (offset !== 'Local' && offset !== 'UTC') return false;
+    if (typeof offset !== 'number') return false;
+    if (Number.isNaN(offset)) return false;
+    if (!Number.isSafeInteger(offset)) return false;
+    if (offset > 840 || offset < -840) return false;
   }
 
   let skippable = true;
@@ -83,10 +85,7 @@ export const isValidCalendarDateBreakdown = (
 
       const tokenValue = input[token as keyof unknown] as unknown;
       const isValidValue =
-        typeof tokenValue === 'number' &&
-        !isNaN(tokenValue) &&
-        tokenValue !== Infinity &&
-        tokenValue !== -Infinity;
+        typeof tokenValue === 'number' && !isNaN(tokenValue) && isFinite(tokenValue);
 
       if (!isValidValue) return false;
     }
@@ -95,7 +94,9 @@ export const isValidCalendarDateBreakdown = (
   return true;
 };
 
-export const inferDateFromCalendarDateBreakdown = (input: CalendarDateBreakdownInput): Date => {
+export const inferSafeDateFromCalendarDateBreakdown = (input: unknown): SafeDate => {
+  if (!isValidCalendarDateBreakdown(input)) return createInvalidatedSafeDate();
+
   const {
     year,
     month = 1,
@@ -104,15 +105,12 @@ export const inferDateFromCalendarDateBreakdown = (input: CalendarDateBreakdownI
     minutes = 0,
     seconds = 0,
     milliseconds = 0,
-    timezoneOffset = 'Local',
+    timezoneOffset = 'ASSUME_LOCAL',
   } = input;
 
-  if (timezoneOffset === 'Local')
-    return new Date(year, month - 1, date, hours, minutes, seconds, milliseconds);
-
-  const offsetInMinutes = timezoneOffset === 'UTC' ? 0 : timezoneOffset;
+  if (timezoneOffset === 'ASSUME_LOCAL')
+    return createSafeDate(new Date(year, month - 1, date, hours, minutes, seconds, milliseconds));
 
   const utcTimestamp = Date.UTC(year, month - 1, date, hours, minutes, seconds, milliseconds);
-
-  return new Date(utcTimestamp + offsetInMinutes * MINUTE);
+  return createSafeDate(new Date(utcTimestamp + timezoneOffset * MINUTE));
 };

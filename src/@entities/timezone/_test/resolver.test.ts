@@ -4,6 +4,7 @@ import {
   createDefaultTimezoneOffsetResolver,
   timezoneOffsetResolverLocal,
   timezoneOffsetResolverUTC,
+  validateTimezoneOffset,
 } from '@entities/timezone';
 
 describe('timezoneOffsetResolverUTC', () => {
@@ -42,5 +43,11 @@ describe('createDefaultTimezoneOffsetResolver', () => {
     const resolver = createDefaultTimezoneOffsetResolver(mock);
     expect(resolver(new Date())).toBe(42);
     expect(mock).toHaveBeenCalled();
+  });
+});
+
+describe('validateTimezoneOffset', () => {
+  test.each([[841], [-841], ['foo']])('invalidates incorrect timezone offset', offset => {
+    expect(validateTimezoneOffset(offset)).toBeNaN();
   });
 });

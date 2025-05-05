@@ -1,6 +1,11 @@
-import { CALENDAR_TOKENS, CalendarDateBreakdown, readCalendarToken } from '@entities/calendar-date';
+import {
+  CALENDAR_TOKENS,
+  CalendarDateBreakdown,
+  SafeDate,
+  readCalendarToken,
+} from '@entities/calendar-date';
 
-export const breakdownDateTime = (date: Date, timezoneOffset: number) => {
+export const breakdownDateTime = (date: SafeDate, timezoneOffset: number) => {
   const breakdownResult: Partial<CalendarDateBreakdown> = {
     timezoneOffset,
   };

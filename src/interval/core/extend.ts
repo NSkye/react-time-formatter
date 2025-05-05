@@ -6,7 +6,7 @@ import {
 } from '@entities/relative-time';
 import { TimezoneOffsetResolver } from '@entities/timezone';
 
-import { stringifyInteger } from '@shared/stringify-number';
+import { stringifyInteger } from '@shared/stringify-integer';
 import { DAY, HOUR, MILLISECOND, MINUTE, SECOND, WEEK } from '@shared/time-primitives';
 
 import { calendarDistance } from './calendar-distance';

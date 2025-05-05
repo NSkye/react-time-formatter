@@ -1,11 +1,11 @@
 import {
-  inferDateFromCalendarDateBreakdown,
+  inferSafeDateFromCalendarDateBreakdown,
   isValidCalendarDateBreakdown,
 } from '@entities/calendar-date/breakdown';
 
-describe('inferDateFromCalendarDateBreakdown', () => {
+describe('inferSafeDateFromCalendarDateBreakdown', () => {
   test('constructs correct local date', () => {
-    const d = inferDateFromCalendarDateBreakdown({
+    const d = inferSafeDateFromCalendarDateBreakdown({
       year: 2025,
       month: 4,
       date: 20,
@@ -19,13 +19,13 @@ describe('inferDateFromCalendarDateBreakdown', () => {
   });
 
   test('constructs correct UTC date', () => {
-    const d = inferDateFromCalendarDateBreakdown({
+    const d = inferSafeDateFromCalendarDateBreakdown({
       year: 2025,
       month: 4,
       date: 20,
       hours: 10,
       minutes: 30,
-      timezoneOffset: 'UTC',
+      timezoneOffset: 0,
     });
 
     expect(d.getUTCFullYear()).toBe(2025);
@@ -35,7 +35,7 @@ describe('inferDateFromCalendarDateBreakdown', () => {
   });
 
   test('applies custom numeric timezone offset', () => {
-    const d = inferDateFromCalendarDateBreakdown({
+    const d = inferSafeDateFromCalendarDateBreakdown({
       year: 2025,
       month: 4,
       date: 20,
@@ -54,7 +54,7 @@ describe('inferDateFromCalendarDateBreakdown', () => {
      */
     const localDate = new Date();
 
-    const d = inferDateFromCalendarDateBreakdown({
+    const d = inferSafeDateFromCalendarDateBreakdown({
       // apply offset as specified by date
       timezoneOffset: localDate.getTimezoneOffset(),
 
@@ -70,6 +70,20 @@ describe('inferDateFromCalendarDateBreakdown', () => {
 
     expect(d.valueOf()).toBe(localDate.valueOf());
   });
+
+  test('creates invalidated safe date from unsafe input', () => {
+    const d = inferSafeDateFromCalendarDateBreakdown({
+      year: 10000,
+      timezoneOffset: 0,
+    });
+
+    expect(d.getUTCHours()).toBeNaN();
+  });
+
+  test('creates invalidated safe date from gibberish input', () => {
+    const d = inferSafeDateFromCalendarDateBreakdown('foo');
+    expect(d.getUTCHours()).toBeNaN();
+  });
 });
 
 describe('isValidCalendarDateBreakdown', () => {
@@ -84,12 +98,21 @@ describe('isValidCalendarDateBreakdown', () => {
   });
 
   test.each([
-    { year: 2025, timezoneOffset: 'UTC' },
-    { year: 2025, timezoneOffset: 'Local' },
+    // UTC
+    { year: 2025, timezoneOffset: 0 },
+    // Local
+    { year: 2025 },
     { year: 2025, timezoneOffset: +180 },
     { year: 2025, timezoneOffset: -180 },
   ])('correctly asserts timezone offset', date => {
     expect(isValidCalendarDateBreakdown(date)).toBe(true);
+  });
+
+  test.each([
+    { year: 2025, timezoneOffset: +841 },
+    { year: 2025, timezoneOffset: -841 },
+  ])('correctly invalidates on invalid timezoneOffset', date => {
+    expect(isValidCalendarDateBreakdown(date)).toBe(false);
   });
 
   test.each([

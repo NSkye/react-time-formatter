@@ -5,7 +5,7 @@ import {
   RelativeTimeUnit,
 } from '@entities/relative-time';
 
-import { stringifyInteger } from '@shared/stringify-number';
+import { stringifyInteger } from '@shared/stringify-integer';
 import { DAY, HOUR, MILLISECOND, MINUTE, MONTH, SECOND, WEEK, YEAR } from '@shared/time-primitives';
 
 export const TOTALS_ALIASES = [

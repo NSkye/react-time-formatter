@@ -1,7 +1,7 @@
 import { CalendarDateBreakdown } from '@entities/calendar-date';
 
 import { timezoneOffsetToUTCRepresentation } from '@shared/date-math';
-import { stringifyInteger } from '@shared/stringify-number';
+import { stringifyInteger } from '@shared/stringify-integer';
 
 // Can be extended later to const array if needed
 type FormatAliases = [
@@ -44,10 +44,9 @@ export const breakdownToOutput = (breakdown: CalendarDateBreakdown): DateTimeOut
     ZZ: timezoneOffsetToUTCRepresentation(timezoneOffset, ''),
   };
 
-  const yearAbs = String(Math.abs(breakdown.year)).padStart(4, '0');
-  const yearSign = breakdown.year < 0 ? '-' : '';
+  [, , , output.YYYY] = stringifyInteger(breakdown.year);
 
-  output.YYYY = `${yearSign}${yearAbs}`;
+  // Negative years are not supported for now
   output.YY = output.YYYY.substring(output.YYYY.length - 2);
 
   [output.M, output.MM] = stringifyInteger(breakdown.month);
@@ -55,12 +54,18 @@ export const breakdownToOutput = (breakdown: CalendarDateBreakdown): DateTimeOut
   [output.d] = stringifyInteger(breakdown.day);
   [output.H, output.HH] = stringifyInteger(breakdown.hours);
 
-  const hour12 = breakdown.hours % 12 || 12;
+  const hour12 = breakdown.hours % 12 <= 0 ? 12 : breakdown.hours % 12;
   const isPM = breakdown.hours >= 12;
 
   [output.h, output.hh] = stringifyInteger(hour12);
+
   output.A = isPM ? 'PM' : 'AM';
   output.a = isPM ? 'pm' : 'am';
+
+  if (isNaN(breakdown.hours)) {
+    output.A = '--';
+    output.a = '--';
+  }
 
   [output.m, output.mm] = stringifyInteger(breakdown.minutes);
   [output.s, output.ss] = stringifyInteger(breakdown.seconds);
