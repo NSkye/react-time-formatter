@@ -23,7 +23,9 @@
     "test:watch": "vitest",
     "lint": "eslint .",
     "prettier:check": "prettier ./src --check",
-    "prettier:fix": "prettier ./src --write"
+    "prettier:fix": "prettier ./src --write",
+    "timezones": "node ./generate-timezones.js && node ./generate-timezones-tests.js && prettier ./src/tz --write",
+    "test-timezones": "vitest run src/tz/"
   },
   "peerDependencies": {
     "react": ">=16.8.0",

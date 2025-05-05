@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => ({
       provider: 'v8',
       reporter: ['text', 'html'],
       include: ['src/**/*'],
+      /** Timezones are too verbose and to be tested separately */
       exclude: ['src/tz/**/*', 'dist/**/*'],
     },
   },

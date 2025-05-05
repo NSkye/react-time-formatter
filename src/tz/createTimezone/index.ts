@@ -4,7 +4,7 @@ type IANATimezone = `${string}/${string}` | 'UTC';
 
 type TimezoneOffsetResolverFactory = (timezone: IANATimezone) => (date: Date) => number;
 
-export const createTimezoneOffsetResolver: TimezoneOffsetResolverFactory = timezone => {
+export const createTimezone: TimezoneOffsetResolverFactory = timezone => {
   const timezoneOffsetResolver = (date: Date): number => {
     try {
       const formatter = new Intl.DateTimeFormat('en-US', {
@@ -20,9 +20,8 @@ export const createTimezoneOffsetResolver: TimezoneOffsetResolverFactory = timez
 
       const parts = formatter.formatToParts(date);
 
-      const get = (type: string) => parseInt(parts.find(p => p.type === type)?.value || '0', 10);
+      const get = (type: string) => parseInt(parts.find(p => p.type === type)!.value, 10);
 
-      // Construct a UTC date that mimics the same wall time in the target time zone
       const localTimeAsUTC = Date.UTC(
         get('year'),
         get('month') - 1,
@@ -40,11 +39,11 @@ export const createTimezoneOffsetResolver: TimezoneOffsetResolverFactory = timez
         console.warn(
           '[react-time-formatter] Invalid or unsupported timezone passed:',
           timezone,
-          '\nDefaults to UTC.'
+          '\nDefaults to NaN.'
         );
       }
 
-      return 0;
+      return NaN;
     }
   };
 
