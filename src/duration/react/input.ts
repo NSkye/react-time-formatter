@@ -6,12 +6,16 @@ import {
   validateRelativeTimstamp,
 } from '@entities/relative-time';
 
+import { ChildrenOrRender } from '@shared/type-helpers';
+
 import { DurationOutput } from '../core/extend';
 
-export interface DurationProps {
-  value: number | RelativeTimeBreakdownInput;
-  children: (breakdown: DurationOutput) => ReactNode;
-}
+export type DurationProps = ChildrenOrRender<
+  {
+    of: number | RelativeTimeBreakdownInput;
+  },
+  (breakdown: DurationOutput) => ReactNode
+>;
 
 export const normalizeDurationInput = (value: unknown): number => {
   if (typeof value === 'number') return validateRelativeTimstamp(value);
@@ -21,10 +25,11 @@ export const normalizeDurationInput = (value: unknown): number => {
 };
 
 export const propsAreEqual = (oldProps: DurationProps, newProps: DurationProps): boolean => {
-  if (oldProps.children !== newProps.children) return false;
+  if ((oldProps.render ?? oldProps.children) !== (oldProps.render ?? newProps.children))
+    return false;
 
-  const oldValue = normalizeDurationInput(oldProps.value);
-  const newValue = normalizeDurationInput(newProps.value);
+  const oldValue = normalizeDurationInput(oldProps.of);
+  const newValue = normalizeDurationInput(newProps.of);
 
   return oldValue === newValue || Object.is(oldValue, newValue);
 };

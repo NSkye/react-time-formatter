@@ -20,25 +20,26 @@ const defaultConfig = {
   milliseconds: true,
 };
 
-const Duration = memo(({ value, children }: DurationProps): JSX.Element => {
+const Duration = memo((props: DurationProps): JSX.Element => {
   const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
   const lastConfig = lastConfigRef.current;
 
-  const ms = normalizeDurationInput(value);
+  const renderer = props.render ?? props.children;
+  const ms = normalizeDurationInput(props.of);
 
-  const render = (config: RelativeTimeConfig) => {
+  const runRender = (config: RelativeTimeConfig) => {
     const breakdown = breakdownDuration(ms, normalizeRelativeTimeConfig(config));
     const output = breakdownToOutput(ms, breakdown);
 
-    const [result, accessed] = spyOnPropertyAccess<ReactNode, DurationOutput, typeof children>(
+    const [result, accessed] = spyOnPropertyAccess<ReactNode, DurationOutput, typeof renderer>(
       output,
-      children
+      renderer
     );
 
     return [result, breakdown, accessedToConfig(accessed)] as const;
   };
 
-  const [naiveResult, naiveBreakdown, newConfig] = render(lastConfig);
+  const [naiveResult, naiveBreakdown, newConfig] = runRender(lastConfig);
 
   // update config regardless of render results
   lastConfigRef.current = newConfig;
@@ -52,7 +53,7 @@ const Duration = memo(({ value, children }: DurationProps): JSX.Element => {
   )
     return <>{naiveResult}</>;
 
-  const [result] = render(newConfig);
+  const [result] = runRender(newConfig);
 
   return <>{result}</>;
 }, propsAreEqual);

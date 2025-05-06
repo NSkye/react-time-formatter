@@ -13,7 +13,7 @@ describe('Duration', () => {
       'renders duration for each input type %s',
       input => {
         render(
-          <Duration value={input}>
+          <Duration of={input}>
             {d => (
               <span data-testid="time">
                 {d.HH}h {d.mm}m
@@ -29,7 +29,7 @@ describe('Duration', () => {
       'falls back to displaying in smaller units when larger are not available',
       input => {
         render(
-          <Duration value={input}>
+          <Duration of={input}>
             {({ minutes }) => <span data-testid="time">{minutes}m</span>}
           </Duration>
         );
@@ -42,7 +42,7 @@ describe('Duration', () => {
       'when negative duration is provided, only totals are showed as negative',
       input => {
         render(
-          <Duration value={input}>
+          <Duration of={input}>
             {({ hours, minutes, seconds, totalMilliseconds }) => (
               <span data-testid="time">
                 {hours}h {minutes}m {seconds}s | {totalMilliseconds}
@@ -61,7 +61,7 @@ describe('Duration', () => {
       'handles unusual time formats',
       () => {
         render(
-          <Duration value={2 * WEEK + 19 * SECOND}>
+          <Duration of={2 * WEEK + 19 * SECOND}>
             {({ weeks, seconds }) => (
               <span data-testid="time">
                 I shall return in precisely {weeks} weeks and {seconds} seconds
@@ -83,7 +83,7 @@ describe('Duration', () => {
       // be manually converted to timestamps if really needed,
       // all explicit date passings should be denied to avoid confusion
       render(
-        <Duration value={new Date('2025-01-01T00:00:00.000Z') as unknown as number}>
+        <Duration of={new Date('2025-01-01T00:00:00.000Z') as unknown as number}>
           {t => (
             <span data-testid="time">
               {t.H}h {t.m}m {t.s}s
@@ -108,13 +108,14 @@ describe('Duration', () => {
       () => {},
     ])('handles random junk input and invalidates the output: %s', junk => {
       render(
-        <Duration value={junk as unknown as number}>
-          {t => (
+        <Duration
+          of={junk as unknown as number}
+          render={t => (
             <span data-testid="time">
               {t.H}h {t.m}m {t.s}s
             </span>
           )}
-        </Duration>
+        />
       );
 
       expect(screen.getByTestId('time').textContent).toBe('#h #m #s');
@@ -136,18 +137,15 @@ describe('Duration', () => {
       [-9e15, 'T-2500000000:00:00.000'],
     ])('Handles input %s', (input, expected) => {
       render(
-        <Duration value={input}>
-          {t => {
-            const sign = t.totalMilliseconds < 0 ? '-' : '+';
-
-            return (
-              <span data-testid="time">
-                T{sign}
-                {t.HH}:{t.mm}:{t.ss}.{t.SSS}
-              </span>
-            );
-          }}
-        </Duration>
+        <Duration
+          of={input}
+          render={t => (
+            <span data-testid="time">
+              T{t.totalMilliseconds < 0 ? '-' : '+'}
+              {t.HH}:{t.mm}:{t.ss}.{t.SSS}
+            </span>
+          )}
+        />
       );
 
       expect(screen.getByTestId('time').textContent).toBe(expected);
@@ -163,7 +161,7 @@ describe('Duration', () => {
       ));
 
       render(
-        <Duration value={{ hours: 6, minutes: 15, seconds: 3, milliseconds: 34 }}>{spy}</Duration>
+        <Duration of={{ hours: 6, minutes: 15, seconds: 3, milliseconds: 34 }} render={spy} />
       );
 
       expect(screen.getByTestId('time').textContent).toBe('06:15:03.034');
@@ -178,7 +176,7 @@ describe('Duration', () => {
       ));
 
       const { rerender } = render(
-        <Duration value={{ hours: 6, minutes: 15, seconds: 3, milliseconds: 34 }}>{spy}</Duration>
+        <Duration of={{ hours: 6, minutes: 15, seconds: 3, milliseconds: 34 }}>{spy}</Duration>
       );
 
       expect(screen.getByTestId('time').textContent).toBe('06:[WHAT IS MINUTE?]:903.034');
@@ -187,7 +185,7 @@ describe('Duration', () => {
       expect(spy).toHaveBeenCalledTimes(2);
 
       rerender(
-        <Duration value={{ hours: 6, minutes: 1, seconds: 3, milliseconds: 34 }}>{spy}</Duration>
+        <Duration of={{ hours: 6, minutes: 1, seconds: 3, milliseconds: 34 }}>{spy}</Duration>
       );
 
       expect(screen.getByTestId('time').textContent).toBe('06:[WHAT IS MINUTE?]:63.034');
@@ -201,7 +199,7 @@ describe('Duration', () => {
     test('with correct value', () => {
       render(
         <Duration
-          value={{
+          of={{
             years: 4,
             months: 6,
             weeks: 2,
@@ -252,8 +250,9 @@ describe('Duration', () => {
 
     test('with invalid value', () => {
       render(
-        <Duration value={Infinity}>
-          {t => (
+        <Duration
+          of={Infinity}
+          render={t => (
             <div>
               <span data-testid="AliasesA">
                 {t.YY} years {t.MM} months {t.WW} weeks {t.DD} days {t.HH} hours {t.mm} minutes{' '}
@@ -274,7 +273,7 @@ describe('Duration', () => {
               </span>
             </div>
           )}
-        </Duration>
+        />
       );
 
       expect(screen.getByTestId('AliasesA').textContent).toBe(
