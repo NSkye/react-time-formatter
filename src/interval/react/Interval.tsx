@@ -25,32 +25,33 @@ const defaultConfig = {
 } satisfies RelativeTimeConfig;
 
 const Interval = memo(
-  ({ from, to, timezoneOffset = 'Local', children }: IntervalProps): JSX.Element => {
+  ({ from, to, timezone = 'Local', children, render }: IntervalProps): JSX.Element => {
     const lastConfigRef = useRef<RelativeTimeConfig>(defaultConfig);
     const lastConfig = lastConfigRef.current;
 
-    const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
+    const renderer = render ?? children;
+    const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezone);
 
     const [fromDate, toDate] = [from, to].map(normalizeInputDate);
 
-    const render = (config: RelativeTimeConfig) => {
+    const runRender = (config: RelativeTimeConfig) => {
       const breakdown = breakdownInterval([fromDate, toDate], config, timezoneOffsetResolver);
       const output = breakdownToOutput([fromDate, toDate], breakdown, timezoneOffsetResolver);
 
-      const [result, accessed] = spyOnPropertyAccess<ReactNode, IntervalOutput, typeof children>(
+      const [result, accessed] = spyOnPropertyAccess<ReactNode, IntervalOutput, typeof renderer>(
         output,
-        children
+        renderer
       );
 
       return [result, accessedToConfig(accessed)] as const;
     };
 
-    const [naiveResult, newConfig] = render(lastConfig);
+    const [naiveResult, newConfig] = runRender(lastConfig);
     lastConfigRef.current = newConfig;
 
     if (satisfiesIntervalConfig(newConfig, lastConfig)) return <>{naiveResult}</>;
 
-    const [result] = render(newConfig);
+    const [result] = runRender(newConfig);
 
     return <>{result}</>;
   },

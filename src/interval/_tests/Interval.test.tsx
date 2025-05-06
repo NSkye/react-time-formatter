@@ -86,7 +86,7 @@ describe('Interval', () => {
       const to = new Date(from.getTime() + offset);
 
       render(
-        <Interval from={from} to={to} timezoneOffset={UTC}>
+        <Interval from={from} to={to} timezone={UTC}>
           {({ months, days }) => <span data-testid="time">{`${months} months, ${days} days`}</span>}
         </Interval>
       );
@@ -99,7 +99,7 @@ describe('Interval', () => {
       ['2024-10-27T01:00:00Z', '2024-10-27T02:00:00Z', '1h'],
     ])('handles DST forward and backward jump (1h gap) correctly', (from, to, expected) => {
       render(
-        <Interval from={from} to={to} timezoneOffset={TestDST}>
+        <Interval from={from} to={to} timezone={TestDST}>
           {({ hours }) => <span data-testid="time">{`${hours}h`}</span>}
         </Interval>
       );
@@ -112,7 +112,7 @@ describe('Interval', () => {
       ['2025-10-26T02:59:59Z', '2025-10-26T02:00:00Z', '59 minutes'],
     ])('No-DST control group', (dateA, dateB, expected) => {
       render(
-        <Interval from={dateA} to={dateB} timezoneOffset={CET2025Test}>
+        <Interval from={dateA} to={dateB} timezone={CET2025Test}>
           {t => <span data-testid="time">{t.mm} minutes</span>}
         </Interval>
       );
@@ -128,7 +128,7 @@ describe('Interval', () => {
       ['2025-10-26T02:59:59+02:00', '2025-10-26T02:00:00+01:00', '00h 00m 01s'],
     ])('handles DST jumps correctly, %s -> %s = %s', (dateA, dateB, expected) => {
       render(
-        <Interval from={dateA} to={dateB} timezoneOffset={Berlin2025}>
+        <Interval from={dateA} to={dateB} timezone={Berlin2025}>
           {t => (
             <span data-testid="time">
               {t.HH}h {t.mm}m {t.ss}s
@@ -265,7 +265,7 @@ describe('Interval', () => {
       'handles fallback to lesser units if bigger are not available',
       (childRender, expected) => {
         render(
-          <Interval from={from} to={to} timezoneOffset={UTC}>
+          <Interval from={from} to={to} timezone={UTC}>
             {childRender}
           </Interval>
         );

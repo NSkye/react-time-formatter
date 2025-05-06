@@ -7,14 +7,18 @@ import {
 } from '@entities/calendar-date';
 import { TimezoneOffsetResolver } from '@entities/timezone';
 
+import { ChildrenOrRender } from '@shared/type-helpers';
+
 import { IntervalOutput } from '../core/extend';
 
-export interface IntervalProps {
-  from: Date | CalendarDateBreakdownInput | string | number;
-  to: Date | CalendarDateBreakdownInput | string | number;
-  timezoneOffset?: 'UTC' | 'Local' | TimezoneOffsetResolver | number;
-  children: (breakdown: IntervalOutput) => ReactNode;
-}
+export type IntervalProps = ChildrenOrRender<
+  {
+    from: Date | CalendarDateBreakdownInput | string | number;
+    to: Date | CalendarDateBreakdownInput | string | number;
+    timezone?: 'UTC' | 'Local' | TimezoneOffsetResolver | number;
+  },
+  (breakdown: IntervalOutput) => ReactNode
+>;
 
 export const normalizeInputDate = (date: unknown) => {
   if (date instanceof Date) return createSafeDate(date);
@@ -24,8 +28,9 @@ export const normalizeInputDate = (date: unknown) => {
 };
 
 export const propsAreEqual = (oldProps: IntervalProps, newProps: IntervalProps): boolean => {
-  if (oldProps.children !== newProps.children) return false;
-  if (oldProps.timezoneOffset !== newProps.timezoneOffset) return false;
+  if ((oldProps.render ?? oldProps.children) !== (newProps.render ?? newProps.children))
+    return false;
+  if (oldProps.timezone !== newProps.timezone) return false;
 
   for (const key of ['from', 'to'] as const) {
     if (normalizeInputDate(oldProps[key]) !== normalizeInputDate(newProps[key])) return false;
