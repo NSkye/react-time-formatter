@@ -7,16 +7,17 @@ import { DateTimeOutput, breakdownToOutput } from '../core/extend';
 import { DateTimeProps, normalizeDateInput, propsAreEqual } from './input';
 
 const DateTime = memo(
-  ({ date, timezoneOffset = 'Local', children }: DateTimeProps): JSX.Element => {
-    const safeDate = normalizeDateInput(date);
+  ({ at, timezone = 'Local', children, render }: DateTimeProps): JSX.Element => {
+    const safeDate = normalizeDateInput(at);
+    const renderer = render ?? children;
 
-    const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezoneOffset);
+    const timezoneOffsetResolver = createDefaultTimezoneOffsetResolver(timezone);
     const timezoneOffsetMinutes = timezoneOffsetResolver(safeDate);
 
     const breakdown = breakdownDateTime(safeDate, timezoneOffsetMinutes);
     const output = breakdownToOutput(breakdown);
 
-    return <>{children(output)}</>;
+    return <>{renderer(output)}</>;
   },
   propsAreEqual
 );

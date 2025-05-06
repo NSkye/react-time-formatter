@@ -13,25 +13,26 @@ describe('DateTime', () => {
       const expected = 'year is 2025, month is 4 and date is 2';
 
       render(
-        <DateTime date={new Date('2025-04-02')}>
-          {({ year, month, date }) => (
+        <DateTime
+          at={new Date('2025-04-02')}
+          render={({ year, month, date }) => (
             <span data-testid="time">{`year is ${year}, month is ${month} and date is ${date}`}</span>
           )}
-        </DateTime>
+        />
       );
 
       expect(screen.getByTestId('time').textContent).toBe(expected);
     });
 
     test('renders date from timestamp', () => {
-      render(<DateTime date={0}>{({ year }) => <span data-testid="time">{year}</span>}</DateTime>);
+      render(<DateTime at={0}>{({ year }) => <span data-testid="time">{year}</span>}</DateTime>);
 
       expect(screen.getByTestId('time').textContent).toBe('1970');
     });
 
     test('renders date from negative timestamp', () => {
       render(
-        <DateTime date={-1 * YEAR}>{({ year }) => <span data-testid="time">{year}</span>}</DateTime>
+        <DateTime at={-1 * YEAR}>{({ year }) => <span data-testid="time">{year}</span>}</DateTime>
       );
 
       expect(screen.getByTestId('time').textContent).toBe('1969');
@@ -40,7 +41,7 @@ describe('DateTime', () => {
     test('renders all aliases correctly', () => {
       render(
         <DateTime
-          date={{
+          at={{
             year: 1989,
             month: 2,
             date: 9,
@@ -50,9 +51,8 @@ describe('DateTime', () => {
             milliseconds: 898,
             timezoneOffset: 0,
           }}
-          timezoneOffset="UTC"
-        >
-          {t => (
+          timezone="UTC"
+          render={t => (
             <div>
               <span data-testid="timeA">
                 year {t.year} month {t.month} date {t.date} day {t.day} hours {t.hours} minutes{' '}
@@ -72,7 +72,7 @@ describe('DateTime', () => {
               </span>
             </div>
           )}
-        </DateTime>
+        />
       );
 
       expect(screen.getByTestId('timeA').textContent).toBe(
@@ -109,7 +109,7 @@ describe('DateTime', () => {
       'min-max-dates are rendered %s is rendered',
       (dateString, [expectedA, expectedB, expectedC]) => {
         render(
-          <DateTime date={dateString} timezoneOffset={0}>
+          <DateTime at={dateString} timezone={0}>
             {t => (
               <div>
                 <span data-testid="A">
@@ -166,7 +166,7 @@ describe('DateTime', () => {
       'sane-midrange dates render correctly: %s',
       (dateString, [expectedA, expectedB, expectedC]) => {
         render(
-          <DateTime date={dateString} timezoneOffset={0}>
+          <DateTime at={dateString} timezone={0}>
             {t => (
               <div>
                 <span data-testid="A">
@@ -231,7 +231,7 @@ describe('DateTime', () => {
       const expectedC = '##.##.#### ##:##:##.### Z';
 
       render(
-        <DateTime date={input as unknown as Date} timezoneOffset={0}>
+        <DateTime at={input as unknown as Date} timezone={0}>
           {t => (
             <div>
               <span data-testid="A">
@@ -306,7 +306,7 @@ describe('DateTime', () => {
       ['2025-10-26T01:00:00Z', '02:00:00 UTC+0100'],
     ])('handles DST jumps correctly, UTC vs Zoned: %s vs %s', (input, expectedA) => {
       render(
-        <DateTime date={input} timezoneOffset={Berlin2025}>
+        <DateTime at={input} timezone={Berlin2025}>
           {t => (
             <div>
               <span data-testid="A">
@@ -331,7 +331,7 @@ describe('DateTime', () => {
       ['2025-10-26T01:00:00Z', '02:00:00 UTC+0100'],
     ])('handles static timezones correctly UTC vs Zoned: %s vs %s', (input, expectedA) => {
       render(
-        <DateTime date={input} timezoneOffset={CET2025Test}>
+        <DateTime at={input} timezone={CET2025Test}>
           {t => (
             <div>
               <span data-testid="A">
@@ -381,10 +381,7 @@ describe('DateTime', () => {
         const expectedC = '##.##.#### ##:##:##.### ##:##';
 
         render(
-          <DateTime
-            date={input as unknown as Date}
-            timezoneOffset={timezoneOffset as unknown as number}
-          >
+          <DateTime at={input as unknown as Date} timezone={timezoneOffset as unknown as number}>
             {t => (
               <div>
                 <span data-testid="A">
