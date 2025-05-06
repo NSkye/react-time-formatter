@@ -77,75 +77,30 @@
       "import": "./dist/tz/Africa/Tunis/index.js",
       "require": "./dist/tz/Africa/Tunis/index.cjs"
     },
-    "./tz/America/Chicago": {
-      "types": "./dist/tz/America/Chicago/index.d.ts",
-      "import": "./dist/tz/America/Chicago/index.js",
-      "require": "./dist/tz/America/Chicago/index.cjs"
+    "./tz/Antarctica/Palmer": {
+      "types": "./dist/tz/Antarctica/Palmer/index.d.ts",
+      "import": "./dist/tz/Antarctica/Palmer/index.js",
+      "require": "./dist/tz/Antarctica/Palmer/index.cjs"
     },
-    "./tz/America/Denver": {
-      "types": "./dist/tz/America/Denver/index.d.ts",
-      "import": "./dist/tz/America/Denver/index.js",
-      "require": "./dist/tz/America/Denver/index.cjs"
-    },
-    "./tz/America/Asuncion": {
-      "types": "./dist/tz/America/Asuncion/index.d.ts",
-      "import": "./dist/tz/America/Asuncion/index.js",
-      "require": "./dist/tz/America/Asuncion/index.cjs"
-    },
-    "./tz/America/La_Paz": {
-      "types": "./dist/tz/America/La_Paz/index.d.ts",
-      "import": "./dist/tz/America/La_Paz/index.js",
-      "require": "./dist/tz/America/La_Paz/index.cjs"
-    },
-    "./tz/America/Lima": {
-      "types": "./dist/tz/America/Lima/index.d.ts",
-      "import": "./dist/tz/America/Lima/index.js",
-      "require": "./dist/tz/America/Lima/index.cjs"
-    },
-    "./tz/America/Los_Angeles": {
-      "types": "./dist/tz/America/Los_Angeles/index.d.ts",
-      "import": "./dist/tz/America/Los_Angeles/index.js",
-      "require": "./dist/tz/America/Los_Angeles/index.cjs"
-    },
-    "./tz/America/New_York": {
-      "types": "./dist/tz/America/New_York/index.d.ts",
-      "import": "./dist/tz/America/New_York/index.js",
-      "require": "./dist/tz/America/New_York/index.cjs"
-    },
-    "./tz/America/Santiago": {
-      "types": "./dist/tz/America/Santiago/index.d.ts",
-      "import": "./dist/tz/America/Santiago/index.js",
-      "require": "./dist/tz/America/Santiago/index.cjs"
-    },
-    "./tz/America/Sao_Paulo": {
-      "types": "./dist/tz/America/Sao_Paulo/index.d.ts",
-      "import": "./dist/tz/America/Sao_Paulo/index.js",
-      "require": "./dist/tz/America/Sao_Paulo/index.cjs"
-    },
-    "./tz/Atlantic/Reykjavik": {
-      "types": "./dist/tz/Atlantic/Reykjavik/index.d.ts",
-      "import": "./dist/tz/Atlantic/Reykjavik/index.js",
-      "require": "./dist/tz/Atlantic/Reykjavik/index.cjs"
-    },
-    "./tz/Australia/Sydney": {
-      "types": "./dist/tz/Australia/Sydney/index.d.ts",
-      "import": "./dist/tz/Australia/Sydney/index.js",
-      "require": "./dist/tz/Australia/Sydney/index.cjs"
+    "./tz/Antarctica/Vostok": {
+      "types": "./dist/tz/Antarctica/Vostok/index.d.ts",
+      "import": "./dist/tz/Antarctica/Vostok/index.js",
+      "require": "./dist/tz/Antarctica/Vostok/index.cjs"
     },
     "./tz/Asia/Almaty": {
       "types": "./dist/tz/Asia/Almaty/index.d.ts",
       "import": "./dist/tz/Asia/Almaty/index.js",
       "require": "./dist/tz/Asia/Almaty/index.cjs"
     },
-    "./tz/Asia/Bangkok": {
-      "types": "./dist/tz/Asia/Bangkok/index.d.ts",
-      "import": "./dist/tz/Asia/Bangkok/index.js",
-      "require": "./dist/tz/Asia/Bangkok/index.cjs"
-    },
     "./tz/Asia/Anadyr": {
       "types": "./dist/tz/Asia/Anadyr/index.d.ts",
       "import": "./dist/tz/Asia/Anadyr/index.js",
       "require": "./dist/tz/Asia/Anadyr/index.cjs"
+    },
+    "./tz/Asia/Bangkok": {
+      "types": "./dist/tz/Asia/Bangkok/index.d.ts",
+      "import": "./dist/tz/Asia/Bangkok/index.js",
+      "require": "./dist/tz/Asia/Bangkok/index.cjs"
     },
     "./tz/Asia/Dhaka": {
       "types": "./dist/tz/Asia/Dhaka/index.d.ts",
@@ -162,75 +117,90 @@
       "import": "./dist/tz/Asia/Kabul/index.js",
       "require": "./dist/tz/Asia/Kabul/index.cjs"
     },
-    "./tz/Asia/Kolkata": {
-      "types": "./dist/tz/Asia/Kolkata/index.d.ts",
-      "import": "./dist/tz/Asia/Kolkata/index.js",
-      "require": "./dist/tz/Asia/Kolkata/index.cjs"
-    },
-    "./tz/Asia/Jerusalem": {
-      "types": "./dist/tz/Asia/Jerusalem/index.d.ts",
-      "import": "./dist/tz/Asia/Jerusalem/index.js",
-      "require": "./dist/tz/Asia/Jerusalem/index.cjs"
+    "./tz/Asia/Karachi": {
+      "types": "./dist/tz/Asia/Karachi/index.d.ts",
+      "import": "./dist/tz/Asia/Karachi/index.js",
+      "require": "./dist/tz/Asia/Karachi/index.cjs"
     },
     "./tz/Asia/Kathmandu": {
       "types": "./dist/tz/Asia/Kathmandu/index.d.ts",
       "import": "./dist/tz/Asia/Kathmandu/index.js",
       "require": "./dist/tz/Asia/Kathmandu/index.cjs"
     },
+    "./tz/Asia/Kolkata": {
+      "types": "./dist/tz/Asia/Kolkata/index.d.ts",
+      "import": "./dist/tz/Asia/Kolkata/index.js",
+      "require": "./dist/tz/Asia/Kolkata/index.cjs"
+    },
     "./tz/Asia/Riyadh": {
       "types": "./dist/tz/Asia/Riyadh/index.d.ts",
       "import": "./dist/tz/Asia/Riyadh/index.js",
       "require": "./dist/tz/Asia/Riyadh/index.cjs"
     },
-    "./tz/Asia/Srednekolymsk": {
-      "types": "./dist/tz/Asia/Srednekolymsk/index.d.ts",
-      "import": "./dist/tz/Asia/Srednekolymsk/index.js",
-      "require": "./dist/tz/Asia/Srednekolymsk/index.cjs"
-    },
-    "./tz/Asia/Tehran": {
-      "types": "./dist/tz/Asia/Tehran/index.d.ts",
-      "import": "./dist/tz/Asia/Tehran/index.js",
-      "require": "./dist/tz/Asia/Tehran/index.cjs"
+    "./tz/Asia/Jerusalem": {
+      "types": "./dist/tz/Asia/Jerusalem/index.d.ts",
+      "import": "./dist/tz/Asia/Jerusalem/index.js",
+      "require": "./dist/tz/Asia/Jerusalem/index.cjs"
     },
     "./tz/Asia/Shanghai": {
       "types": "./dist/tz/Asia/Shanghai/index.d.ts",
       "import": "./dist/tz/Asia/Shanghai/index.js",
       "require": "./dist/tz/Asia/Shanghai/index.cjs"
     },
-    "./tz/Asia/Tokyo": {
-      "types": "./dist/tz/Asia/Tokyo/index.d.ts",
-      "import": "./dist/tz/Asia/Tokyo/index.js",
-      "require": "./dist/tz/Asia/Tokyo/index.cjs"
+    "./tz/Asia/Tehran": {
+      "types": "./dist/tz/Asia/Tehran/index.d.ts",
+      "import": "./dist/tz/Asia/Tehran/index.js",
+      "require": "./dist/tz/Asia/Tehran/index.cjs"
+    },
+    "./tz/Asia/Srednekolymsk": {
+      "types": "./dist/tz/Asia/Srednekolymsk/index.d.ts",
+      "import": "./dist/tz/Asia/Srednekolymsk/index.js",
+      "require": "./dist/tz/Asia/Srednekolymsk/index.cjs"
     },
     "./tz/Asia/Vladivostok": {
       "types": "./dist/tz/Asia/Vladivostok/index.d.ts",
       "import": "./dist/tz/Asia/Vladivostok/index.js",
       "require": "./dist/tz/Asia/Vladivostok/index.cjs"
     },
-    "./tz/Asia/Karachi": {
-      "types": "./dist/tz/Asia/Karachi/index.d.ts",
-      "import": "./dist/tz/Asia/Karachi/index.js",
-      "require": "./dist/tz/Asia/Karachi/index.cjs"
+    "./tz/Asia/Tokyo": {
+      "types": "./dist/tz/Asia/Tokyo/index.d.ts",
+      "import": "./dist/tz/Asia/Tokyo/index.js",
+      "require": "./dist/tz/Asia/Tokyo/index.cjs"
     },
     "./tz/Asia/Yangon": {
       "types": "./dist/tz/Asia/Yangon/index.d.ts",
       "import": "./dist/tz/Asia/Yangon/index.js",
       "require": "./dist/tz/Asia/Yangon/index.cjs"
     },
-    "./tz/Europe/Berlin": {
-      "types": "./dist/tz/Europe/Berlin/index.d.ts",
-      "import": "./dist/tz/Europe/Berlin/index.js",
-      "require": "./dist/tz/Europe/Berlin/index.cjs"
+    "./tz/Atlantic/Reykjavik": {
+      "types": "./dist/tz/Atlantic/Reykjavik/index.d.ts",
+      "import": "./dist/tz/Atlantic/Reykjavik/index.js",
+      "require": "./dist/tz/Atlantic/Reykjavik/index.cjs"
     },
     "./tz/Europe/Belgrade": {
       "types": "./dist/tz/Europe/Belgrade/index.d.ts",
       "import": "./dist/tz/Europe/Belgrade/index.js",
       "require": "./dist/tz/Europe/Belgrade/index.cjs"
     },
+    "./tz/Australia/Sydney": {
+      "types": "./dist/tz/Australia/Sydney/index.d.ts",
+      "import": "./dist/tz/Australia/Sydney/index.js",
+      "require": "./dist/tz/Australia/Sydney/index.cjs"
+    },
     "./tz/Europe/Helsinki": {
       "types": "./dist/tz/Europe/Helsinki/index.d.ts",
       "import": "./dist/tz/Europe/Helsinki/index.js",
       "require": "./dist/tz/Europe/Helsinki/index.cjs"
+    },
+    "./tz/Europe/Berlin": {
+      "types": "./dist/tz/Europe/Berlin/index.d.ts",
+      "import": "./dist/tz/Europe/Berlin/index.js",
+      "require": "./dist/tz/Europe/Berlin/index.cjs"
+    },
+    "./tz/Europe/Kaliningrad": {
+      "types": "./dist/tz/Europe/Kaliningrad/index.d.ts",
+      "import": "./dist/tz/Europe/Kaliningrad/index.js",
+      "require": "./dist/tz/Europe/Kaliningrad/index.cjs"
     },
     "./tz/Europe/London": {
       "types": "./dist/tz/Europe/London/index.d.ts",
@@ -247,20 +217,60 @@
       "import": "./dist/tz/Europe/Paris/index.js",
       "require": "./dist/tz/Europe/Paris/index.cjs"
     },
-    "./tz/Europe/Kaliningrad": {
-      "types": "./dist/tz/Europe/Kaliningrad/index.d.ts",
-      "import": "./dist/tz/Europe/Kaliningrad/index.js",
-      "require": "./dist/tz/Europe/Kaliningrad/index.cjs"
+    "./tz/America/Asuncion": {
+      "types": "./dist/tz/America/Asuncion/index.d.ts",
+      "import": "./dist/tz/America/Asuncion/index.js",
+      "require": "./dist/tz/America/Asuncion/index.cjs"
     },
-    "./tz/Antarctica/Palmer": {
-      "types": "./dist/tz/Antarctica/Palmer/index.d.ts",
-      "import": "./dist/tz/Antarctica/Palmer/index.js",
-      "require": "./dist/tz/Antarctica/Palmer/index.cjs"
+    "./tz/America/Chicago": {
+      "types": "./dist/tz/America/Chicago/index.d.ts",
+      "import": "./dist/tz/America/Chicago/index.js",
+      "require": "./dist/tz/America/Chicago/index.cjs"
     },
-    "./tz/Antarctica/Vostok": {
-      "types": "./dist/tz/Antarctica/Vostok/index.d.ts",
-      "import": "./dist/tz/Antarctica/Vostok/index.js",
-      "require": "./dist/tz/Antarctica/Vostok/index.cjs"
+    "./tz/America/Denver": {
+      "types": "./dist/tz/America/Denver/index.d.ts",
+      "import": "./dist/tz/America/Denver/index.js",
+      "require": "./dist/tz/America/Denver/index.cjs"
+    },
+    "./tz/America/Lima": {
+      "types": "./dist/tz/America/Lima/index.d.ts",
+      "import": "./dist/tz/America/Lima/index.js",
+      "require": "./dist/tz/America/Lima/index.cjs"
+    },
+    "./tz/America/La_Paz": {
+      "types": "./dist/tz/America/La_Paz/index.d.ts",
+      "import": "./dist/tz/America/La_Paz/index.js",
+      "require": "./dist/tz/America/La_Paz/index.cjs"
+    },
+    "./tz/America/Los_Angeles": {
+      "types": "./dist/tz/America/Los_Angeles/index.d.ts",
+      "import": "./dist/tz/America/Los_Angeles/index.js",
+      "require": "./dist/tz/America/Los_Angeles/index.cjs"
+    },
+    "./tz/America/Sao_Paulo": {
+      "types": "./dist/tz/America/Sao_Paulo/index.d.ts",
+      "import": "./dist/tz/America/Sao_Paulo/index.js",
+      "require": "./dist/tz/America/Sao_Paulo/index.cjs"
+    },
+    "./tz/America/New_York": {
+      "types": "./dist/tz/America/New_York/index.d.ts",
+      "import": "./dist/tz/America/New_York/index.js",
+      "require": "./dist/tz/America/New_York/index.cjs"
+    },
+    "./tz/Indian/Mahe": {
+      "types": "./dist/tz/Indian/Mahe/index.d.ts",
+      "import": "./dist/tz/Indian/Mahe/index.js",
+      "require": "./dist/tz/Indian/Mahe/index.cjs"
+    },
+    "./tz/Pacific/Honolulu": {
+      "types": "./dist/tz/Pacific/Honolulu/index.d.ts",
+      "import": "./dist/tz/Pacific/Honolulu/index.js",
+      "require": "./dist/tz/Pacific/Honolulu/index.cjs"
+    },
+    "./tz/America/Santiago": {
+      "types": "./dist/tz/America/Santiago/index.d.ts",
+      "import": "./dist/tz/America/Santiago/index.js",
+      "require": "./dist/tz/America/Santiago/index.cjs"
     },
     "./tz/Pacific/Auckland": {
       "types": "./dist/tz/Pacific/Auckland/index.d.ts",
@@ -271,22 +281,13 @@
       "types": "./dist/tz/America/Argentina/Buenos_Aires/index.d.ts",
       "import": "./dist/tz/America/Argentina/Buenos_Aires/index.js",
       "require": "./dist/tz/America/Argentina/Buenos_Aires/index.cjs"
-    },
-    "./tz/Pacific/Honolulu": {
-      "types": "./dist/tz/Pacific/Honolulu/index.d.ts",
-      "import": "./dist/tz/Pacific/Honolulu/index.js",
-      "require": "./dist/tz/Pacific/Honolulu/index.cjs"
-    },
-    "./tz/Indian/Mahe": {
-      "types": "./dist/tz/Indian/Mahe/index.d.ts",
-      "import": "./dist/tz/Indian/Mahe/index.js",
-      "require": "./dist/tz/Indian/Mahe/index.cjs"
     }
   },
   "files": [
     "dist"
   ],
   "scripts": {
+    "prebuild": "npm run timezones && npm run test && npm run test:timezones",
     "build": "tsup",
     "timezones": "node ./tz-generate.js && node ./tz-generate-test.js && node ./tz-generate-exports.js && prettier ./src/tz --write",
     "test": "vitest run",

@@ -31,7 +31,7 @@ export default defineConfig([
       Interval: 'src/interval/react/Interval.tsx',
     },
     format: ['esm', 'cjs'],
-    dts: false,
+    dts: true,
     ...mainConfig,
   },
   {

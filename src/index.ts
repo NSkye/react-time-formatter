@@ -1,5 +1,3 @@
-import { DateTime } from './date-time/react/DateTime';
-import { Duration } from './duration/react';
-import { Interval } from './interval/react';
-
-export { Interval, Duration, DateTime };
+export * from './date-time/react/DateTime';
+export * from './duration/react/Duration';
+export * from './interval/react/Interval';
