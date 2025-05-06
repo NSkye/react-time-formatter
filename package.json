@@ -287,7 +287,7 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "npm run timezones && npm run test && npm run test:timezones",
+    "prebuild": "npm run test && npm run test:timezones",
     "build": "tsup",
     "timezones": "node ./tz-generate.js && node ./tz-generate-test.js && node ./tz-generate-exports.js && prettier ./src/tz --write",
     "test": "vitest run",
