@@ -28,7 +28,9 @@ export const normalizeDateInput = (input: DateTimeProps['at']): SafeDate => {
 };
 
 export const propsAreEqual = (oldProps: DateTimeProps, newProps: DateTimeProps): boolean => {
-  if (oldProps.children !== newProps.children) return false;
+  if ((oldProps.render ?? oldProps.children) !== (newProps.render ?? newProps.children))
+    return false;
+
   if (oldProps.timezone !== newProps.timezone) return false;
 
   const oldTimestamp = normalizeDateInput(oldProps.at).valueOf();
