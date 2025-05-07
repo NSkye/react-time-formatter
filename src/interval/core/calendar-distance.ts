@@ -13,6 +13,7 @@ import { TimezoneOffsetResolver } from '@entities/timezone';
  */
 export const calendarDistance = (
   fromTo: [SafeDate, SafeDate],
+  // no point for anything besides year and month
   unit: 'year' | 'month',
   timezoneOffsetResolver: TimezoneOffsetResolver
 ): [number, SafeDate, SafeDate] => {
@@ -29,7 +30,11 @@ export const calendarDistance = (
   let cursor = createSafeDate(new Date(from));
   let next = createSafeDate(new Date(cursor));
 
-  while (true) {
+  /**
+   * Not expected to complete even a fraction of these iterations
+   * just an upper bound to avoid any potential infinite loop bugs
+   */
+  for (let i = 0; i <= 2e4; i++) {
     next = createSafeDate(changeToken(next, readToken(next) + 1));
 
     if (next.valueOf() <= to.valueOf()) {

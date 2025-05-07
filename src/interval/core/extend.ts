@@ -10,7 +10,7 @@ import { TimezoneOffsetResolver } from '@entities/timezone';
 import { stringifyInteger } from '@shared/stringify-integer';
 import { DAY, HOUR, MILLISECOND, MINUTE, SECOND, WEEK } from '@shared/time-primitives';
 
-import { calendarDistance } from './calendar-distance';
+import { breakdownInterval } from './breakdown';
 
 export const TOTALS_ALIASES = [
   'totalYears',
@@ -84,8 +84,39 @@ export const breakdownToOutput = (
   [output.s, output.ss] = stringifyInteger(breakdown.seconds);
   [, , output.SSS] = stringifyInteger(breakdown.milliseconds);
 
-  [output.totalYears] = calendarDistance(fromTo, 'year', timezoneOffsetResolver);
-  [output.totalMonths] = calendarDistance(fromTo, 'month', timezoneOffsetResolver);
+  // TODO: Fix messy call signature
+  output.totalYears =
+    breakdownInterval(
+      fromTo,
+      {
+        years: true,
+        months: false,
+        weeks: false,
+        days: false,
+        hours: false,
+        minutes: false,
+        seconds: false,
+        milliseconds: false,
+      },
+      timezoneOffsetResolver
+    ).years * (to.valueOf() < from.valueOf() ? -1 : 1);
+
+  // TODO: Fix messy call signatuee
+  output.totalMonths =
+    breakdownInterval(
+      fromTo,
+      {
+        years: false,
+        months: true,
+        weeks: false,
+        days: false,
+        hours: false,
+        minutes: false,
+        seconds: false,
+        milliseconds: false,
+      },
+      timezoneOffsetResolver
+    ).months * (to.valueOf() < from.valueOf() ? -1 : 1);
 
   output.totalWeeks = Math.trunc((to.valueOf() - from.valueOf()) / WEEK);
   output.totalDays = Math.trunc((to.valueOf() - from.valueOf()) / DAY);
@@ -112,10 +143,3 @@ export const accessedToConfig = (accessed: IntervalAccessed): RelativeTimeConfig
 
   return config as RelativeTimeConfig;
 };
-
-/* export const generateInvalidatedOutput = () => {
-  const numericals = [...RELATIVE_TIME_UNITS, ...TOTALS_ALIASES].map(key => [key, NaN]);
-  const strings = FORMAT_ALIASES.map(key => [key, `${key}-Invalid`]);
-
-  return Object.fromEntries([...numericals, ...strings]) as IntervalOutput;
-}; */
