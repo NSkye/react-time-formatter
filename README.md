@@ -190,7 +190,7 @@ Always `number`. Either **all positive** or **all negative.**
 Passed to render function and abbreviated as `t` in this doc.
 ```tsx
 <Interval from={new Date('1789-07-14')} to={new Date('1799-11-09')}>
-	{t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
+  {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
 </Interval>
 ```
 ##### Pre-formatted keys
@@ -248,7 +248,7 @@ import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
 {/* ... */}
 
 <DateTime at={Date.now()} timezone={Belgrade}>
-	{dt => <span> It's {dt.HH}:{dt.mm} in Belgrade! </span>}
+  {dt => <span> It's {dt.HH}:{dt.mm} in Belgrade! </span>}
 </DateTime>
 ```
 
@@ -262,7 +262,7 @@ const Tokyo = createTimezone('Asia/Tokyo');
 {/* ... */}
 
 <DateTime at={Date.now()} timezone={Tokyo}>
-	{dt => <span> It's {dt.HH}:{dt.mm} in Tokyo! </span>}
+  {dt => <span> It's {dt.HH}:{dt.mm} in Tokyo! </span>}
 </DateTime>
 ```
 
@@ -276,7 +276,7 @@ const What = createTimezone('Invalid/Unknown');
 {/* ... */}
 
 <DateTime at={Date.now()} timezone={What}>
-	{dt => <span> It's always {dt.HH}:{dt.mm} in invalid timezone! </span>}
+  {dt => <span> It's always {dt.HH}:{dt.mm} in invalid timezone! </span>}
 </DateTime>
 
 {/* It's always ##:## in invalid timezone! */}
@@ -296,7 +296,7 @@ const UTC3 = () => -180; // just a static offset
 {/* equal to */}
 
 <DateTime at={Date.now()} timezone={-180}>
-	{dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
+  {dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
 </DateTime>
 ```
 
@@ -331,7 +331,7 @@ const Berlin: (date: Date) => number = date => {
 {/* ... */}
 
 <DateTime at={Date.now()} timezone={Berlin}>
-	{dt => <span> It's {dt.HH}:{dt.mm} in Berlin! </span>}
+  {dt => <span> It's {dt.HH}:{dt.mm} in Berlin! </span>}
 </DateTime>
 ```
 
