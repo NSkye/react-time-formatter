@@ -1,11 +1,35 @@
 {
   "name": "react-time-formatter",
   "version": "1.0.0",
+  "license": "MIT",
+  "author": "Nikolai Laevskii <laevskii@pm.me>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NSkye/react-time-formatter"
+  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "react",
+    "date",
+    "time",
+    "formatter",
+    "datetime",
+    "duration",
+    "interval",
+    "timezones",
+    "luxon",
+    "typescript",
+    "esm"
+  ],
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -283,9 +307,6 @@
       "require": "./dist/tz/America/Argentina/Buenos_Aires/index.cjs"
     }
   },
-  "files": [
-    "dist"
-  ],
   "scripts": {
     "prebuild": "npm run test && npm run test:timezones",
     "build": "tsup",
