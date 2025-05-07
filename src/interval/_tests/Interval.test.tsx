@@ -2,10 +2,13 @@ import { render, screen } from '@testing-library/react';
 import React from 'react';
 import { describe, expect, test } from 'vitest';
 
+import { RelativeTimeBreakdown } from '@entities/relative-time';
+
 import { DAY } from '@shared/time-primitives';
 
 import { IntervalOutput } from '../core/extend';
 import { Interval } from '../react/Interval';
+import { deoptimizedTestCases } from './slow-breakdown';
 
 /** Timezones */
 
@@ -91,6 +94,23 @@ describe('Interval', () => {
         </Interval>
       );
 
+      expect(screen.getByTestId('time').textContent).toBe(expected);
+    });
+
+    test.each([
+      [0, '1 months, 0 days'],
+      [1, '0 months, 30 days'],
+    ])('Is timezone-aware', (timezone, expected) => {
+      render(
+        <Interval from="2025-04-01T00:00:00Z" to="2025-05-01T00:00:00Z" timezone={timezone}>
+          {({ months, days }) => <span data-testid="time">{`${months} months, ${days} days`}</span>}
+        </Interval>
+      );
+
+      const dateA = new Date('2025-04-01T00:00:00Z');
+      const dateB = new Date('2025-05-01T00:00:00Z');
+
+      expect(dateB.getTime() - dateA.getTime()).toBe(30 * DAY);
       expect(screen.getByTestId('time').textContent).toBe(expected);
     });
 
@@ -289,5 +309,50 @@ describe('Interval', () => {
         '10 years 03 months 26 days, total: -3770 days'
       );
     });
+  });
+
+  describe('Leap years testing', () => {
+    const yearMonthDayBreakdownTests = deoptimizedTestCases.map(
+      ({ title, from, to, yearsMonthsDaysBreakdown }) => [title, from, to, yearsMonthsDaysBreakdown]
+    ) as [string, string, string, RelativeTimeBreakdown][];
+    test.each(yearMonthDayBreakdownTests)(
+      'year, month, day breakdown | %s | from: %s to: %s',
+      (_title, from, to, { years, months, days }) => {
+        const expected = `years: ${years}, months: ${months}, days: ${days}`;
+
+        render(
+          <Interval from={to} to={from} timezone={UTC}>
+            {(t: IntervalOutput) => (
+              <span data-testid="BREAKDOWN">
+                years: {t.years}, months: {t.months}, days: {t.days}
+              </span>
+            )}
+          </Interval>
+        );
+
+        expect(screen.getByTestId('BREAKDOWN').textContent).toBe(expected);
+      }
+    );
+
+    const dayBreakdownTests = deoptimizedTestCases.map(({ title, from, to, daysBreakdown }) => [
+      title,
+      from,
+      to,
+      daysBreakdown,
+    ]) as [string, string, string, RelativeTimeBreakdown][];
+    test.each(dayBreakdownTests)(
+      'day breakdown | %s | from: %s to: %s',
+      (_title, from, to, { days }) => {
+        const expected = `days: ${days}`;
+
+        render(
+          <Interval from={to} to={from} timezone={UTC}>
+            {(t: IntervalOutput) => <span data-testid="BREAKDOWN">days: {t.days}</span>}
+          </Interval>
+        );
+
+        expect(screen.getByTestId('BREAKDOWN').textContent).toBe(expected);
+      }
+    );
   });
 });
