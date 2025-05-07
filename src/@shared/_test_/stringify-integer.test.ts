@@ -1,6 +1,6 @@
 import { describe } from 'vitest';
 
-import { stringifyInteger } from './stringify-integer';
+import { stringifyInteger } from '@shared/stringify-integer';
 
 describe('stringifyInteger', () => {
   test.each([

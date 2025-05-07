@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { spyOnPropertyAccess } from './access-tracker';
+import { spyOnPropertyAccess } from '@shared/access-tracker';
 
 describe('spyOnPropertyAccess', () => {
   test('returns the result of the function', () => {

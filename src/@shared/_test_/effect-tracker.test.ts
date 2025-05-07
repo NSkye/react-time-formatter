@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from 'vitest';
 
-import { createSyncEffectTracker } from './effect-tracker';
+import { createSyncEffectTracker } from '@shared/effect-tracker';
 
 describe('createSyncEffectTracker', () => {
   test('does nothing if dispatch is called without a scope', () => {
