@@ -1,8 +1,5 @@
-# react-time-formatter
-
 React-first date & time formatting library with a clear API and built-in timezone support
 
----
 ## Features
 
 - 📅 `DateTime` — A consistent wrapper around `Date` with zoned time support
@@ -28,14 +25,14 @@ Automatically falls back to smaller units when larger ones aren’t requested:
 
 ```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
-	{t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
+  {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
 </Interval>
 
 {/* 10 years 03 months 26 days */}
 
 
 <Interval from='1789-07-14' to='1799-11-09'>
-	{t => <span> {t.DD} days </span>}
+  {t => <span> {t.DD} days </span>}
 </Interval>
 
 {/* 3770 days */}
@@ -82,7 +79,7 @@ Passed to render function and abbreviated as `dt` in this doc.
 
 ```tsx
 <DateTime at={new Date('2025-02-05T15:08:09.998+10:00')}>
-	{dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
+  {dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
 </DateTime>
 ```
 ##### Pre-formatted keys
@@ -293,7 +290,7 @@ const UTC3 = () => -180; // just a static offset
 {/* ... */}
 
 <DateTime at={Date.now()} timezone={UTC3}>
-	{dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
+  {dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
 </DateTime>
 
 {/* equal to */}
@@ -313,18 +310,18 @@ const Berlin: (date: Date) => number = date => {
   // Find last Sunday in March
   const startDST = new Date(Date.UTC(year, 2, 31, 1)); // March 31, 01:00 UTC
   while (startDST.getUTCDay() !== 0) {
-	startDST.setUTCDate(startDST.getUTCDate() - 1);
+    startDST.setUTCDate(startDST.getUTCDate() - 1);
   }
 
   // Find last Sunday in October
   const endDST = new Date(Date.UTC(year, 9, 31, 1)); // October 31, 01:00 UTC
   while (endDST.getUTCDay() !== 0) {
-	endDST.setUTCDate(endDST.getUTCDate() - 1);
+    endDST.setUTCDate(endDST.getUTCDate() - 1);
   }
 
   // If date is within DST range, return UTC+2 = -120
   if (date >= startDST && date < endDST) {
-	return -120;
+    return -120;
   }
 
   // Otherwise, return UTC+1 = -60
@@ -344,33 +341,33 @@ A flat object representation for date. Must include at least year value. **`dt`*
 ```ts
 // year and month, all the rest values will be set to 0
 const valid = {
-	 year: 2025,
-	 // 1-indexed, february
-	 month: 2,
-	 date: 15,
+  year: 2025,
+  // 1-indexed, february
+  month: 2,
+  date: 15,
 };
 
 // meaningless without year
 const invalid1 = {
-	 month: 2,
-	 date: 15
+  month: 2,
+  date: 15
 };
 
 // should have at least year value
 const invalid2 = {};
 
 const full = {
-	 year: 2025,
-	 month: 2,
-	 date: 15,
-	 hours: 10,
-	 minutes: 0,
-	 seconds: 15,
-	 milliseconds: 12,
+  year: 2025,
+  month: 2,
+  date: 15,
+  hours: 10,
+  minutes: 0,
+  seconds: 15,
+  milliseconds: 12,
 
-	 // UTC+3. Since CalendarDate is just a snapshot, the timezone offset can only be a number.
-	 // Doesn't affect how the date will be displayed, only how it will be parsed.
-	 timezoneOffset: -180,
+  // UTC+3. Since CalendarDate is just a snapshot, the timezone offset can only be a number.
+  // Doesn't affect how the date will be displayed, only how it will be parsed.
+  timezoneOffset: -180,
 }
 ```
 ### RelativeTime
@@ -384,14 +381,14 @@ const valid = { minutes: 80 }
 
 // with all units
 const full = {
-	 years: 9,
-	 months: 10,
-	 weeks: 3,
-	 days: 4,
-	 hours: 5,
-	 minutes: 7,
-	 seconds: 15,
-	 milliseconds: 900
+  years: 9,
+  months: 10,
+  weeks: 3,
+  days: 4,
+  hours: 5,
+  minutes: 7,
+  seconds: 15,
+  milliseconds: 900
 }
 ```
 # License
