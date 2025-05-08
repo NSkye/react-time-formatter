@@ -13,40 +13,37 @@ React-first date & time formatting library with a clear API and built-in timezon
 - 🚫 Zero-dependency
 ## Example
 
-#### Just write what you mean—the API stays out of your way.
+##### Just write what you mean—the API stays out of your way.
 
 ```tsx
 <Duration of={{ minutes: 80 }}>
   {t => <span> {t.HH} hours {t.mm} minutes </span>}
 </Duration>
 ```
- _→ **1 hours 20 minutes**_
-
-#### Automatically falls back to smaller units when larger ones aren’t requested:
+ _→ 1 hours 20 minutes_
+##### Automatically falls back to smaller units when larger ones aren’t requested:
 
 ```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
   {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
 </Interval>
 ```
- _→ **10 years 03 months 26 days**_
+ _→ 10 years 03 months 26 days_
 
 ```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
   {t => <span> {t.DD} days </span>}
 </Interval>
 ```
- _→ **3770 days**_
-
-#### Consistent and non-misleading: shows placeholders instead of correct-looking false values.
+ _→ 3770 days_
+##### Consistent and non-misleading: shows placeholders instead of correct-looking false values.
 
 ```tsx
 <DateTime at={new Date(1e15)}>
 	{dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
 </DateTime>
 ```
- _→ **##:## -- ##/## ####**_
-
+ _→ ##:## -- ##/## ####_
 ## Setup
 
 Installation
@@ -56,15 +53,14 @@ npm install react-time-formatter
 
 ESM import
 ```typescript
-import { DateTime, Interval, Duration } from 'react-time-formatter'
+import { Interval } from 'react-time-formatter'
 ```
 
 CJS import
 ```typescript
-const { DateTime } = require('react-time-formatter/DateTime');
 const { Interval } = require('react-time-formatter/Interval');
-const { Duration } = require('react-time-formatter/Duration');
 ```
+
 ## API Reference
 ### DateTime
 `DateTime` is a specific point on the timeline.
@@ -241,9 +237,7 @@ Always `number`. Either **all positive** or **all negative.**
 Timezones can be applied to `DateTime` or `Interval` components.
 ### Native
 Native timezones (except for `UTC`, `GMT` and `Local`) rely on browser's or Node's built-in **Intl** object.
-
-The easiest way to apply timezone is just by importing it from its respective `tz/` path:
-
+##### The easiest way to apply timezone is just by importing it from its respective `tz/` path:
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
@@ -254,9 +248,9 @@ import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
   {dt => <span> It's {dt.HH}:{dt.mm} in Belgrade! </span>}
 </DateTime>
 ```
+ _→ It's 01:00 in Belgrade!_
 
-Alternatively, timezone can be applied by being defined manually:
-
+##### Alternatively, timezone can be applied by being defined manually:
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import { createTimezone } from 'react-time-formatter/tz/createTimezone'
@@ -269,9 +263,9 @@ const Tokyo = createTimezone('Asia/Tokyo');
   {dt => <span> It's {dt.HH}:{dt.mm} in Tokyo! </span>}
 </DateTime>
 ```
+ _→ It's 10:00 in Tokyo!_
 
-Invalid timezones will never produce a valid-looking result:
-
+##### Invalid timezones will never produce a valid-looking result:
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import { createTimezone } from 'react-time-formatter/tz/createTimezone'
@@ -281,37 +275,45 @@ const What = createTimezone('Invalid/Unknown');
 
 ```tsx
 <DateTime at={Date.now()} timezone={What}>
-  {dt => <span> It's always {dt.HH}:{dt.mm} in invalid timezone! </span>}
+  {dt => <span> It's always {dt.HH}:{dt.mm} in the invalid timezone! </span>}
 </DateTime>
-
-{/* It's always ##:## in invalid timezone! */}
 ```
-
+ _→ It's always ##:## in the invalid timezone!_
 ### Custom Timezone
-Custom timezones are defined by a **TimezoneOffsetResolver** function that takes a date and returns a timezone offset in minutes and can be as simple as this:
+Custom timezones are defined by a **TimezoneOffsetResolver** function that takes a date and returns a timezone offset in minutes. They can also be defined by a plain number if you need a static offset.
+##### The simplest custom timezone:
+Just a static UTC+3 offset
+```tsx
+const UTC3 = () => -180;
+```
+Note that `-180` translates into `UTC+3`, that's because timezone offset is consistent with JS `Date.prototype.getTimezoneOffset()` function that defines timezone offset as **how many minutes should be added to local timezone to get UTC**.
 
 ```tsx
-const UTC3 = () => -180; // just a static offset
-
-{/* ... */}
-
 <DateTime at={Date.now()} timezone={UTC3}>
   {dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
 </DateTime>
+```
+ _→ UTC+0300 time is 03:00_
 
-{/* equal to */}
-
+Literal:
+```tsx
 <DateTime at={Date.now()} timezone={-180}>
   {dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
 </DateTime>
 ```
+ _→ UTC+0300 time is 03:00_
 
-The custom implementation of the Berlin timezone with its DST rules:
+##### The custom implementation of the local timezone:
+Local timezone is applied by default and it can be imported from `tz/` module, so you don't normally have to implement it. But if you had to, it would look like this:
+```typescript
+const Local = (date: Date) => date.getTimezoneOffset();
+```
 
+##### The custom implementation of the Berlin timezone with its DST rules:
+In case you can't rely on browser's timezone implementation and need your timezone to always have the same behaviour, you can define your all DST rules explicitly:
 ```tsx
 // The manual equivalent of createTimezone('Europe/Berlin') call:
-
-const Berlin: (date: Date) => number = date => {
+const Berlin = (date: Date): number => {
   const year = date.getUTCFullYear();
 
   // Find last Sunday in March
@@ -334,13 +336,14 @@ const Berlin: (date: Date) => number = date => {
   // Otherwise, return UTC+1 = -60
   return -60;
 };
+```
 
-{/* ... */}
-
+```tsx
 <DateTime at={Date.now()} timezone={Berlin}>
   {dt => <span> It's {dt.HH}:{dt.mm} in Berlin! </span>}
 </DateTime>
 ```
+ _→ It's 01:00 in Berlin!_
 ## Type reference
 ### CalendarDate
 A flat object representation for date. Must include at least year value. **`dt`** is guaranteed to be valid **CalendarDate**.
