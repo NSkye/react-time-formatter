@@ -1,4 +1,4 @@
-[![bundlephobia](https://img.shields.io/bundlephobia/minzip/react-time-formatter?color=success)](https://bundlephobia.com/package/react-time-formatter) [![npm version](https://img.shields.io/npm/v/react-time-formatter?color=red)](https://www.npmjs.com/package/react-time-formatter) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![bundlephobia](https://img.shields.io/bundlephobia/minzip/react-time-formatter?color=success)](https://bundlephobia.com/package/react-time-formatter&style=for-the-badge) [![npm version](https://img.shields.io/npm/v/react-time-formatter?color=?color=informational)](https://bundlephobia.com/package/react-time-formatter&style=for-the-badge)](https://www.npmjs.com/package/react-time-formatter)
 
 React-first date & time formatting library with a clear API and built-in timezone support
 
