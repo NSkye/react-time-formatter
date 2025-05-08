@@ -13,42 +13,39 @@ React-first date & time formatting library with a clear API and built-in timezon
 - 🚫 Zero-dependency
 ## Example
 
-Just write what you mean—the API stays out of your way.
+#### Just write what you mean—the API stays out of your way.
 
 ```tsx
 <Duration of={{ minutes: 80 }}>
   {t => <span> {t.HH} hours {t.mm} minutes </span>}
 </Duration>
-
-{/* 1 hour 20 minutes */}
 ```
+ _→ **1 hours 20 minutes**_
 
-Automatically falls back to smaller units when larger ones aren’t requested:
+#### Automatically falls back to smaller units when larger ones aren’t requested:
 
 ```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
   {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
 </Interval>
+```
+ _→ **10 years 03 months 26 days**_
 
-{/* 10 years 03 months 26 days */}
-
-
+```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
   {t => <span> {t.DD} days </span>}
 </Interval>
-
-{/* 3770 days */}
 ```
+ _→ **3770 days**_
 
-Consistent and non-misleading: shows placeholders instead of correct-looking false values.
+#### Consistent and non-misleading: shows placeholders instead of correct-looking false values.
 
 ```tsx
 <DateTime at={new Date(1e15)}>
 	{dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
 </DateTime>
-
-{/* ##:## -- ##/## #### */}
 ```
+ _→ **##:## -- ##/## ####**_
 
 ## Setup
 
@@ -84,6 +81,7 @@ Passed to render function and abbreviated as `dt` in this doc.
   {dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
 </DateTime>
 ```
+ _→ 03:08 PM 02/05 2025_
 ##### Pre-formatted keys
 Always `string`:
 
@@ -136,6 +134,7 @@ Passed to render function and abbreviated as `t` in this doc.
   {t => <span> {t.HH} hours {t.mm} minutes </span>}
 </Duration>
 ```
+ _→ 01 hours 20 minutes_
 ##### Pre-formatted keys
 Always `string`, numbers inside string are **never** negative:
 
@@ -195,26 +194,27 @@ Passed to render function and abbreviated as `t` in this doc.
   {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
 </Interval>
 ```
+ _→ 10 years 3 months 26 days_
 ##### Pre-formatted keys
 Always `string`, numbers inside string are **never** negative:
 
-|Token|Description|Example|
-|---|---|---|
-|`t.Y`|Years (1–2 digits)|`5`|
-|`t.YY`|2-digit years|`05`|
-|`t.M`|Months (1–2 digits)|`2`|
-|`t.MM`|2-digit months|`02`|
-|`t.W`|Weeks (1–2 digits)|`2`|
-|`t.WW`|2-digit weeks|`02`|
-|`t.D`|Days (1–2 digits)|`4`|
-|`t.DD`|2-digit days|`04`|
-|`t.H`|Hours (1–2 digits)|`15`|
-|`t.HH`|2-digit hours|`15`|
-|`t.m`|Minutes (1–2 digits)|`8`|
-|`t.mm`|2-digit minutes|`08`|
-|`t.s`|Seconds (1–2 digits)|`9`|
-|`t.ss`|2-digit seconds|`09`|
-|`t.SSS`|Milliseconds (3 digits)|`998`|
+| Token   | Description             | Example |
+| ------- | ----------------------- | ------- |
+| `t.Y`   | Years (1–2 digits)      | `5`     |
+| `t.YY`  | 2-digit years           | `05`    |
+| `t.M`   | Months (1–2 digits)     | `2`     |
+| `t.MM`  | 2-digit months          | `02`    |
+| `t.W`   | Weeks (1–2 digits)      | `2`     |
+| `t.WW`  | 2-digit weeks           | `02`    |
+| `t.D`   | Days (1–2 digits)       | `4`     |
+| `t.DD`  | 2-digit days            | `04`    |
+| `t.H`   | Hours (1–2 digits)      | `15`    |
+| `t.HH`  | 2-digit hours           | `15`    |
+| `t.m`   | Minutes (1–2 digits)    | `8`     |
+| `t.mm`  | 2-digit minutes         | `08`    |
+| `t.s`   | Seconds (1–2 digits)    | `9`     |
+| `t.ss`  | 2-digit seconds         | `09`    |
+| `t.SSS` | Milliseconds (3 digits) | `998`   |
 ##### Unit values
 Always `number`. Always **positive.**
 - **Breakdown by unit:**
@@ -243,40 +243,43 @@ Timezones can be applied to `DateTime` or `Interval` components.
 Native timezones (except for `UTC`, `GMT` and `Local`) rely on browser's or Node's built-in **Intl** object.
 
 The easiest way to apply timezone is just by importing it from its respective `tz/` path:
+
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
+```
 
-{/* ... */}
-
+```tsx
 <DateTime at={Date.now()} timezone={Belgrade}>
   {dt => <span> It's {dt.HH}:{dt.mm} in Belgrade! </span>}
 </DateTime>
 ```
 
 Alternatively, timezone can be applied by being defined manually:
+
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import { createTimezone } from 'react-time-formatter/tz/createTimezone'
 
 const Tokyo = createTimezone('Asia/Tokyo');
+```
 
-{/* ... */}
-
+```tsx
 <DateTime at={Date.now()} timezone={Tokyo}>
   {dt => <span> It's {dt.HH}:{dt.mm} in Tokyo! </span>}
 </DateTime>
 ```
 
 Invalid timezones will never produce a valid-looking result:
+
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import { createTimezone } from 'react-time-formatter/tz/createTimezone'
 
 const What = createTimezone('Invalid/Unknown');
+```
 
-{/* ... */}
-
+```tsx
 <DateTime at={Date.now()} timezone={What}>
   {dt => <span> It's always {dt.HH}:{dt.mm} in invalid timezone! </span>}
 </DateTime>
@@ -286,6 +289,7 @@ const What = createTimezone('Invalid/Unknown');
 
 ### Custom Timezone
 Custom timezones are defined by a **TimezoneOffsetResolver** function that takes a date and returns a timezone offset in minutes and can be as simple as this:
+
 ```tsx
 const UTC3 = () => -180; // just a static offset
 
@@ -303,6 +307,7 @@ const UTC3 = () => -180; // just a static offset
 ```
 
 The custom implementation of the Berlin timezone with its DST rules:
+
 ```tsx
 // The manual equivalent of createTimezone('Europe/Berlin') call:
 
@@ -336,7 +341,6 @@ const Berlin: (date: Date) => number = date => {
   {dt => <span> It's {dt.HH}:{dt.mm} in Berlin! </span>}
 </DateTime>
 ```
-
 ## Type reference
 ### CalendarDate
 A flat object representation for date. Must include at least year value. **`dt`** is guaranteed to be valid **CalendarDate**.
