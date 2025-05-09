@@ -17,7 +17,7 @@ React-first date & time formatting library with a clear API and built-in timezon
 
 ```tsx
 <Duration of={{ minutes: 80 }}>
-  {t => <span> {t.HH} hours {t.mm} minutes </span>}
+  {t => <span>{t.HH} hours {t.mm} minutes</span>}
 </Duration>
 ```
  _→ 1 hours 20 minutes_
@@ -25,14 +25,14 @@ React-first date & time formatting library with a clear API and built-in timezon
 
 ```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
-  {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
+  {t => <span>{t.YY} years {t.MM} months {t.DD} days</span>}
 </Interval>
 ```
  _→ 10 years 03 months 26 days_
 
 ```tsx
 <Interval from='1789-07-14' to='1799-11-09'>
-  {t => <span> {t.DD} days </span>}
+  {t => <span>{t.DD} days</span>}
 </Interval>
 ```
  _→ 3770 days_
@@ -40,7 +40,7 @@ React-first date & time formatting library with a clear API and built-in timezon
 
 ```tsx
 <DateTime at={new Date(1e15)}>
-	{dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
+	{dt => <span>{dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY}</span>}
 </DateTime>
 ```
  _→ ##:## -- ##/## ####_
@@ -73,8 +73,8 @@ const { Interval } = require('react-time-formatter/Interval');
 Passed to render function and abbreviated as `dt` in this doc.
 
 ```tsx
-<DateTime at={new Date('2025-02-05T15:08:09.998+10:00')}>
-  {dt => <span> {dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY} </span>}
+<DateTime at={new Date('2025-02-05T15:08:09.998')}>
+  {dt => <span>{dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY}</span>}
 </DateTime>
 ```
  _→ 03:08 PM 02/05 2025_
@@ -127,7 +127,7 @@ Passed to render function and abbreviated as `t` in this doc.
 
 ```tsx
 <Duration of={4800000}>
-  {t => <span> {t.HH} hours {t.mm} minutes </span>}
+  {t => <span>{t.HH} hours {t.mm} minutes</span>}
 </Duration>
 ```
  _→ 01 hours 20 minutes_
@@ -187,10 +187,10 @@ Always `number`. Either **all positive** or **all negative.**
 Passed to render function and abbreviated as `t` in this doc.
 ```tsx
 <Interval from={new Date('1789-07-14')} to={new Date('1799-11-09')}>
-  {t => <span> {t.YY} years {t.MM} months {t.DD} days </span>}
+  {t => <span>{t.YY} years {t.MM} months {t.DD} days</span>}
 </Interval>
 ```
- _→ 10 years 3 months 26 days_
+ _→ 10 years 03 months 26 days_
 ##### Pre-formatted keys
 Always `string`, numbers inside string are **never** negative:
 
@@ -245,7 +245,7 @@ import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
 
 ```tsx
 <DateTime at={Date.now()} timezone={Belgrade}>
-  {dt => <span> It's {dt.HH}:{dt.mm} in Belgrade! </span>}
+  {dt => <span>It's {dt.HH}:{dt.mm} in Belgrade!</span>}
 </DateTime>
 ```
  _→ It's 01:00 in Belgrade!_
@@ -260,7 +260,7 @@ const Tokyo = createTimezone('Asia/Tokyo');
 
 ```tsx
 <DateTime at={Date.now()} timezone={Tokyo}>
-  {dt => <span> It's {dt.HH}:{dt.mm} in Tokyo! </span>}
+  {dt => <span>It's {dt.HH}:{dt.mm} in Tokyo!</span>}
 </DateTime>
 ```
  _→ It's 10:00 in Tokyo!_
@@ -275,7 +275,7 @@ const What = createTimezone('Invalid/Unknown');
 
 ```tsx
 <DateTime at={Date.now()} timezone={What}>
-  {dt => <span> It's always {dt.HH}:{dt.mm} in the invalid timezone! </span>}
+  {dt => <span>It's always {dt.HH}:{dt.mm} in the invalid timezone!</span>}
 </DateTime>
 ```
  _→ It's always ##:## in the invalid timezone!_
@@ -290,7 +290,7 @@ Note that `-180` translates into `UTC+3`, that's because timezone offset is cons
 
 ```tsx
 <DateTime at={Date.now()} timezone={UTC3}>
-  {dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
+  {dt => <span>UTC{t.ZZ} time is {dt.HH}:{dt.mm}</span>}
 </DateTime>
 ```
  _→ UTC+0300 time is 03:00_
@@ -298,7 +298,7 @@ Note that `-180` translates into `UTC+3`, that's because timezone offset is cons
 Literal:
 ```tsx
 <DateTime at={Date.now()} timezone={-180}>
-  {dt => <span> UTC{t.ZZ} time is {dt.HH}:{dt.mm} </span>}
+  {dt => <span>UTC{t.ZZ} time is {dt.HH}:{dt.mm}</span>}
 </DateTime>
 ```
  _→ UTC+0300 time is 03:00_
@@ -340,7 +340,7 @@ const Berlin = (date: Date): number => {
 
 ```tsx
 <DateTime at={Date.now()} timezone={Berlin}>
-  {dt => <span> It's {dt.HH}:{dt.mm} in Berlin! </span>}
+  {dt => <span>It's {dt.HH}:{dt.mm} in Berlin!</span>}
 </DateTime>
 ```
  _→ It's 01:00 in Berlin!_
