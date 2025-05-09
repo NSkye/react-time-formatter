@@ -60,6 +60,60 @@ CJS import
 const { Interval } = require('react-time-formatter/Interval');
 ```
 
+## Guideline
+There's only one guideline.
+### Avoid early or unnecessary dereference
+**❌ Incorrect:**
+Although this may seem to work fine, `HH`, `mm` and `ss` occur before any logic happens which may lead to incorrect results down the line.
+```tsx
+<Interval from={DateA} to={DateB}>
+  {({ HH, mm, ss }) => <span>{HH}:{mm}:{ss}</span>}
+</Interval>
+```
+**✅ Correct:**
+Safe. Each unit is referenced only when it's needed.
+```tsx
+<Interval from={DateA} to={DateB}>
+  {t => <span>{t.HH}:{t.mm}:{t.ss}</span>}
+</Interval>
+```
+**❌ Incorrect:**
+Whenever unit is referenced (e.g. `t.hours`) it's assumed this unit is required for formatting.
+```tsx
+<Interval from={DateA} to={DateB}>
+  {t => {
+    if (t.hours < 2) return <span>{mm}:{ss}</span>
+    return (<span>{HH}:{mm}:{ss}</span>)
+  }}
+</Interval>
+```
+_For 80 minutes will output → 20:00_
+_(hours are assumed to be present somewhere since they were referenced at `t.hours`)_
+
+**✅ Correct:**
+Use `total*` units for conditions when applicable:
+```tsx
+<Interval from={DateA} to={DateB}>
+  {t => {
+    if (t.totalHours < 2) return <span>{mm}:{ss}</span>
+    return (<span>{HH}:{mm}:{ss}</span>)
+  }}
+</Interval>
+```
+_For 80 minutes will correctly output → 80:00_
+
+ **✅ Also correct:**
+Use units that are gonna be used under either condition:
+```tsx
+<Interval from={DateA} to={DateB}>
+  {t => {
+    if (t.minutes < 2) return <span>{mm}:{ss}</span>
+    return (<span>{HH}:{mm}:{ss}</span>)
+  }}
+</Interval>
+```
+_For 80 minutes will correctly output → 80:00_
+
 ## API Reference
 ### DateTime
 `DateTime` is a specific point on the timeline.
