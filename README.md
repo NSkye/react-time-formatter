@@ -88,7 +88,7 @@ Whenever unit is referenced (e.g. `t.hours`) it's assumed to be used.
 </Interval>
 ```
 _For 80 minutes will output → 20:00_
-_(since hours are referenced at `t.hours`, will assume 01:20:00, is being rendered)_
+_(since hours are referenced at `t.hours` will assume "01:20:00" is being rendered)_
 
 **✅ Correct:**
 Use `total*` units for conditions when applicable:
