@@ -39,7 +39,7 @@ React-first date & time formatting library with a clear API and built-in timezon
 
 ```tsx
 <DateTime at={new Date(1e15)}>
-	{dt => <span>{dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY}</span>}
+  {dt => <span>{dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY}</span>}
 </DateTime>
 ```
  _→ ##:## -- ##/## ####_
