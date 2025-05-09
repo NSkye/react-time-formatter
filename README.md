@@ -82,8 +82,8 @@ Whenever unit is referenced (e.g. `t.hours`) it's assumed this unit is required 
 ```tsx
 <Interval from={DateA} to={DateB}>
   {t => {
-    if (t.hours < 2) return <span>{mm}:{ss}</span>
-    return (<span>{HH}:{mm}:{ss}</span>)
+    if (t.hours < 2) return <span>{t.mm}:{t.ss}</span>
+    return (<span>{t.HH}:{t.mm}:{t.ss}</span>)
   }}
 </Interval>
 ```
@@ -95,8 +95,8 @@ Use `total*` units for conditions when applicable:
 ```tsx
 <Interval from={DateA} to={DateB}>
   {t => {
-    if (t.totalHours < 2) return <span>{mm}:{ss}</span>
-    return (<span>{HH}:{mm}:{ss}</span>)
+    if (t.totalHours < 2) return <span>{t.mm}:{t.ss}</span>
+    return (<span>{t.HH}:{t.mm}:{t.ss}</span>)
   }}
 </Interval>
 ```
@@ -107,8 +107,8 @@ Use units that are gonna be used under either condition:
 ```tsx
 <Interval from={DateA} to={DateB}>
   {t => {
-    if (t.minutes < 2) return <span>{mm}:{ss}</span>
-    return (<span>{HH}:{mm}:{ss}</span>)
+    if (t.minutes < 2) return <span>{t.mm}:{t.ss}</span>
+    return (<span>{t.HH}:{t.mm}:{t.ss}</span>)
   }}
 </Interval>
 ```
