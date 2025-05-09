@@ -1,7 +1,6 @@
 [![Minzipped size](https://badgen.net/bundlephobia/minzip/react-time-formatter?color=green)](https://bundlephobia.com/package/react-time-formatter) [![Dependencies](https://badgen.net/bundlephobia/dependency-count/react-time-formatter?color=green)](https://bundlephobia.com/package/react-time-formatter) [![Tree-shakable](https://badgen.net/bundlephobia/tree-shaking/react-time-formatter?color=green)](https://bundlephobia.com/package/react-time-formatter) [![npm version](https://img.shields.io/npm/v/react-time-formatter?color=informational)](https://www.npmjs.com/package/react-time-formatter)
 
 React-first date & time formatting library with a clear API and built-in timezone support
-
 ## Features
 
 - 📅 `DateTime` — A consistent wrapper around `Date` with zoned time support
@@ -79,45 +78,48 @@ Passed to render function and abbreviated as `dt` in this doc.
 ```
  _→ 03:08 PM 02/05 2025_
 ##### Pre-formatted keys
-Always `string`:
+Recommended for insertion, since they're already of `string` type and support readable error-state in form of `#` or `--` symbols for cases when correct date can't be displayed.
 
-|Token|Description|Example|
-|---|---|---|
-|`dt.YY`|2-digit year|`25`|
-|`dt.YYYY`|4-digit year|`2025`|
-|`dt.M`|Month (1–12)|`2` (February)|
-|`dt.MM`|2-digit month|`02`|
-|`dt.D`|Day of the month (1–31)|`5`|
-|`dt.DD`|2-digit day of the month|`05`|
-|`dt.d`|Day of week (1 = Monday)|`1`|
-|`dt.H`|Hour (24h)|`15`|
-|`dt.HH`|2-digit hour (24h)|`15`|
-|`dt.h`|Hour (12h)|`3`|
-|`dt.hh`|2-digit hour (12h)|`03`|
-|`dt.m`|Minute|`8`|
-|`dt.mm`|2-digit minute|`08`|
-|`dt.s`|Second|`9`|
-|`dt.ss`|2-digit second|`09`|
-|`dt.SSS`|Milliseconds (3-digit)|`998`|
-|`dt.A`|Meridiem (uppercase)|`AM` / `PM`|
-|`dt.a`|Meridiem (lowercase)|`am` / `pm`|
-|`dt.Z`|UTC offset (`+hh:mm` or `Z`)|`+10:00`|
-|`dt.ZZ`|UTC offset (`+hhmm`)|`+1000`|
+| Token     | Type     | Description                  | Example          | Invalid   |
+| --------- | -------- | ---------------------------- | ---------------- | --------- |
+| `dt.YY`   | `string` | 2-digit year                 | `"25"`           | `"##"`    |
+| `dt.YYYY` | `string` | 4-digit year                 | `"2025"`         | `"####"`  |
+| `dt.M`    | `string` | Month (1–12)                 | `"2"` (February) | `"#"`     |
+| `dt.MM`   | `string` | 2-digit month                | `"02"`           | `"##"`    |
+| `dt.D`    | `string` | Day of the month (1–31)      | `"5"`            | `"#"`     |
+| `dt.DD`   | `string` | 2-digit day of the month     | `"05"`           | `"##"`    |
+| `dt.d`    | `string` | Day of week (1 = Monday)     | `"1"`            | `"#"`     |
+| `dt.H`    | `string` | Hour (24h)                   | `"15"`           | `"##"`    |
+| `dt.HH`   | `string` | 2-digit hour (24h)           | `"15"`           | `"##"`    |
+| `dt.h`    | `string` | Hour (12h)                   | `"3"`            | `"#"`     |
+| `dt.hh`   | `string` | 2-digit hour (12h)           | `"03"`           | `"##"`    |
+| `dt.m`    | `string` | Minute                       | `"8"`            | `"#"`     |
+| `dt.mm`   | `string` | 2-digit minute               | `"08"`           | `"##"`    |
+| `dt.s`    | `string` | Second                       | `"9"`            | `"#"`     |
+| `dt.ss`   | `string` | 2-digit second               | `"09"`           | `"##"`    |
+| `dt.SSS`  | `string` | Milliseconds (3-digit)       | `"998"`          | `"###"`   |
+| `dt.A`    | `string` | Meridiem (uppercase)         | `"AM"` / `"PM"`  | `"--"`    |
+| `dt.a`    | `string` | Meridiem (lowercase)         | `"am"` / `"pm"`  | `"--"`    |
+| `dt.Z`    | `string` | UTC offset (`+hh:mm` or `Z`) | `"+10:00"`       | `"##:##"` |
+| `dt.ZZ`   | `string` | UTC offset (`+hhmm`)         | `"+1000"`        | `"####"`  |
 ##### Raw keys
-Always `number`:
-- **Calendar tokens:**
-	- `dt.year`
-	- `dt.month` (1-indexed)
-	- `dt.date`
-	- `dt.day`
-	- `dt.hours`
-	- `dt.minutes`
-	- `dt.seconds`
-	- `dt.milliseconds`
-- **Timezone offset:**
-	- `dt.timezoneOffset` timezone offset in minutes, `-180` means `UTC+3`, useful for debugging
+Are always of `number` type. Recommended for conditional logic and debugging, will turn into `NaN` when the input is incorrect.
+
+| Token               | Type     | Example        | Note                                         |
+| ------------------- | -------- | -------------- | -------------------------------------------- |
+| `dt.year`           | `number` | `2025`         |                                              |
+| `dt.month`          | `number` | `2` (february) | 1-indexed                                    |
+| `dt.date`           | `number` | `5`            |                                              |
+| `dt.day`            | `number` | `1`            | Day of the week (1 = Monday)                 |
+| `dt.hours`          | `number` | `15`           |                                              |
+| `dt.minutes`        | `number` | `8`            |                                              |
+| `dt.seconds`        | `number` | `9`            |                                              |
+| `dt.milliseconds`   | `number` | `998`          |                                              |
+| `dt.timezoneOffset` | `number` | `-600`         | In minutes: for example `-180` means `UTC+3` |
+
 ### Duration
 `Duration` is a **fixed quantity of time units, independent of specific dates** or positions on a timeline.
+> ❗ For Duration **`years` are approximated to 365 days** and **`months` are approximated to `30 days`.**  Use [Interval](###Interval) if these units need to be precisely reflected.
 #### Props
 - `of:` `number` [`RelativeTime`](#RelativeTime) — The quantity of time in milliseconds or arbitrary units
 - `children?:` [`Render`](#Render) — Render function
@@ -132,49 +134,52 @@ Passed to render function and abbreviated as `t` in this doc.
 ```
  _→ 01 hours 20 minutes_
 ##### Pre-formatted keys
-Always `string`, numbers inside string are **never** negative:
+Recommended for insertion, since they're already of `string` type and support readable error-state in form of `#` symbols for cases when correct duration can't be displayed.
 
-|Token|Description|Example|
-|---|---|---|
-|`t.Y`|Years (1–2 digits)|`5`|
-|`t.YY`|2-digit years|`05`|
-|`t.M`|Months (1–2 digits)|`2`|
-|`t.MM`|2-digit months|`02`|
-|`t.W`|Weeks (1–2 digits)|`2`|
-|`t.WW`|2-digit weeks|`02`|
-|`t.D`|Days (1–2 digits)|`4`|
-|`t.DD`|2-digit days|`04`|
-|`t.H`|Hours (1–2 digits)|`15`|
-|`t.HH`|2-digit hours|`15`|
-|`t.m`|Minutes (1–2 digits)|`8`|
-|`t.mm`|2-digit minutes|`08`|
-|`t.s`|Seconds (1–2 digits)|`9`|
-|`t.ss`|2-digit seconds|`09`|
-|`t.SSS`|Milliseconds (3 digits)|`998`|
-##### Unit values
-Always `number`. Always **positive.**
-- **Breakdown by unit:**
-	- `t.years`
-	- `t.months`
-	- `t.weeks`
-	- `t.days`
-	- `t.hours`
-	- `t.minutes`
-	- `t.seconds`
-	- `t.milliseconds`
+| Unit    | Type     | Description             | Example | Invalid |
+| ------- | -------- | ----------------------- | ------- | ------- |
+| `t.Y`   | `string` | Years (1–2 digits)      | `"5"`   | `"#"`   |
+| `t.YY`  | `string` | 2-digit years           | `"05"`  | `"##"`  |
+| `t.M`   | `string` | Months (1–2 digits)     | `"2"`   | `"#"`   |
+| `t.MM`  | `string` | 2-digit months          | `"02"`  | `"##"`  |
+| `t.W`   | `string` | Weeks (1–2 digits)      | `"2"`   | `"#"`   |
+| `t.WW`  | `string` | 2-digit weeks           | `"02"`  | `"##"`  |
+| `t.D`   | `string` | Days (1–2 digits)       | `"4"`   | `"#"`   |
+| `t.DD`  | `string` | 2-digit days            | `"04"`  | `"##"`  |
+| `t.H`   | `string` | Hours (1–2 digits)      | `"15"`  | `"##"`  |
+| `t.HH`  | `string` | 2-digit hours           | `"15"`  | `"##"`  |
+| `t.m`   | `string` | Minutes (1–2 digits)    | `"8"`   | `"#"`   |
+| `t.mm`  | `string` | 2-digit minutes         | `"08"`  | `"##"`  |
+| `t.s`   | `string` | Seconds (1–2 digits)    | `"9"`   | `"#"`   |
+| `t.ss`  | `string` | 2-digit seconds         | `"09"`  | `"##"`  |
+| `t.SSS` | `string` | Milliseconds (3 digits) | `"998"` | `"###"` |
+##### Raw unit values
+Are always of `number` type and either **positive** or 0, never negative. Recommended for conditional logic and debugging, will turn into `NaN` when the input is incorrect.
+
+| Unit             | Type     | Example | Note                                                    |
+| ---------------- | -------- | ------- | ------------------------------------------------------- |
+| `t.years`        | `number` | `5`     | For **Duration** years are approximated to **365 days** |
+| `t.months`       | `number` | `2`     | For **Duration** months are approximated to **30 days** |
+| `t.weeks`        | `number` | `2`     | Is defined as chunk of 7 days                           |
+| `t.days`         | `number` | `4`     |                                                         |
+| `t.hours`        | `number` | `15`    |                                                         |
+| `t.minutes`      | `number` | `8`     |                                                         |
+| `t.seconds`      | `number` | `9`     |                                                         |
+| `t.milliseconds` | `number` | `998`   |                                                         |
 ##### Total values
-Always `number`. Either **all positive** or **all negative.**
-- **Full duration converted to single unit:**
-	- `t.totalYears`
-	- `t.totalMonths`
-	- `t.totalWeeks`
-	- `t.totalDays`
-	- `t.totalHours`
-	- `t.totalMinutes`
-	- `t.totalSeconds`
-	- `t.totalMilliseconds`
+Independent from the rest of keys and their insertion doesn't affect formatting rules. Each key represents the **whole duration** converted to a single unit. Are always of `number` type and can be both **positive or negative** or 0. Will also turn into `NaN` when the input is incorrect.
 
-> ❗ For Duration **`years` are approximated to 365 days** and **`months` are approximated to `30 days`.**  Use [Interval](###Interval) if these units need to be precisely reflected.
+| Key                   | Type     | Example        | Note                                                     |
+| --------------------- | -------- | -------------- | -------------------------------------------------------- |
+| `t.totalYears`        | `number` | `5`            | For **Duration** years are approximated to **365 days**  |
+| `t.totalMonths`       | `number` | `62`           | For **Duration** months are approximated to **365 days** |
+| `t.totalWeeks`        | `number` | `271`          |                                                          |
+| `t.totalDays`         | `number` | `1903`         |                                                          |
+| `t.totalHours`        | `number` | `45687`        |                                                          |
+| `t.totalMinutes`      | `number` | `2741228`      |                                                          |
+| `t.totalSeconds`      | `number` | `164473689`    |                                                          |
+| `t.totalMilliseconds` | `number` | `164473689998` |                                                          |
+
 ### Interval
 `Interval` is a **calendar-aware span between two dates.** Unlike [Duration](###Duration) Interval **accounts for** the variable length of `months` and `years`.
 #### Props
@@ -192,79 +197,116 @@ Passed to render function and abbreviated as `t` in this doc.
 ```
  _→ 10 years 03 months 26 days_
 ##### Pre-formatted keys
-Always `string`, numbers inside string are **never** negative:
+Recommended for insertion, since they're already of `string` type and support readable error-state in form of `#` symbols for cases when correct duration can't be displayed.
 
-| Token   | Description             | Example |
-| ------- | ----------------------- | ------- |
-| `t.Y`   | Years (1–2 digits)      | `5`     |
-| `t.YY`  | 2-digit years           | `05`    |
-| `t.M`   | Months (1–2 digits)     | `2`     |
-| `t.MM`  | 2-digit months          | `02`    |
-| `t.W`   | Weeks (1–2 digits)      | `2`     |
-| `t.WW`  | 2-digit weeks           | `02`    |
-| `t.D`   | Days (1–2 digits)       | `4`     |
-| `t.DD`  | 2-digit days            | `04`    |
-| `t.H`   | Hours (1–2 digits)      | `15`    |
-| `t.HH`  | 2-digit hours           | `15`    |
-| `t.m`   | Minutes (1–2 digits)    | `8`     |
-| `t.mm`  | 2-digit minutes         | `08`    |
-| `t.s`   | Seconds (1–2 digits)    | `9`     |
-| `t.ss`  | 2-digit seconds         | `09`    |
-| `t.SSS` | Milliseconds (3 digits) | `998`   |
-##### Unit values
-Always `number`. Always **positive.**
-- **Breakdown by unit:**
-	- `t.years`
-	- `t.months`
-	- `t.weeks`
-	- `t.days`
-	- `t.hours`
-	- `t.minutes`
-	- `t.seconds`
-	- `t.milliseconds`
+| Unit    | Type     | Description             | Example | Invalid |
+| ------- | -------- | ----------------------- | ------- | ------- |
+| `t.Y`   | `string` | Years (1–2 digits)      | `"5"`   | `"#"`   |
+| `t.YY`  | `string` | 2-digit years           | `"05"`  | `"##"`  |
+| `t.M`   | `string` | Months (1–2 digits)     | `"2"`   | `"#"`   |
+| `t.MM`  | `string` | 2-digit months          | `"02"`  | `"##"`  |
+| `t.W`   | `string` | Weeks (1–2 digits)      | `"2"`   | `"#"`   |
+| `t.WW`  | `string` | 2-digit weeks           | `"02"`  | `"##"`  |
+| `t.D`   | `string` | Days (1–2 digits)       | `"4"`   | `"#"`   |
+| `t.DD`  | `string` | 2-digit days            | `"04"`  | `"##"`  |
+| `t.H`   | `string` | Hours (1–2 digits)      | `"15"`  | `"##"`  |
+| `t.HH`  | `string` | 2-digit hours           | `"15"`  | `"##"`  |
+| `t.m`   | `string` | Minutes (1–2 digits)    | `"8"`   | `"#"`   |
+| `t.mm`  | `string` | 2-digit minutes         | `"08"`  | `"##"`  |
+| `t.s`   | `string` | Seconds (1–2 digits)    | `"9"`   | `"#"`   |
+| `t.ss`  | `string` | 2-digit seconds         | `"09"`  | `"##"`  |
+| `t.SSS` | `string` | Milliseconds (3 digits) | `"998"` | `"###"` |
+##### Raw unit values
+Are always of `number` type and either **positive** or 0, never negative. Recommended for conditional logic and debugging, will turn into `NaN` when the input is incorrect.
+
+| Unit             | Type     | Example |
+| ---------------- | -------- | ------- |
+| `t.years`        | `number` | `5`     |
+| `t.months`       | `number` | `2`     |
+| `t.weeks`        | `number` | `2`     |
+| `t.days`         | `number` | `4`     |
+| `t.hours`        | `number` | `15`    |
+| `t.minutes`      | `number` | `8`     |
+| `t.seconds`      | `number` | `9`     |
+| `t.milliseconds` | `number` | `998`   |
 ##### Total values
-Always `number`. Either **all positive** or **all negative.**
-- **Full duration converted to single unit:**
-	- `t.totalYears`
-	- `t.totalMonths`
-	- `t.totalWeeks`
-	- `t.totalDays`
-	- `t.totalHours`
-	- `t.totalMinutes`
-	- `t.totalSeconds`
-	- `t.totalMilliseconds`
+Independent from the rest of keys and their insertion doesn't affect formatting rules. Each key represents the **whole duration** converted to a single unit. Are always of `number` type and can be both **positive or negative** or 0. Will also turn into `NaN` when the input is incorrect.
+
+| Key                   | Type     | Example        |
+| --------------------- | -------- | -------------- |
+| `t.totalYears`        | `number` | `5`            |
+| `t.totalMonths`       | `number` | `62`           |
+| `t.totalWeeks`        | `number` | `271`          |
+| `t.totalDays`         | `number` | `1903`         |
+| `t.totalHours`        | `number` | `45687`        |
+| `t.totalMinutes`      | `number` | `2741228`      |
+| `t.totalSeconds`      | `number` | `164473689`    |
+| `t.totalMilliseconds` | `number` | `164473689998` |
+
 ## Timezone
-Timezones can be applied to `DateTime` or `Interval` components.
-### Native
-Native timezones (except for `UTC`, `GMT` and `Local`) rely on browser's or Node's built-in **Intl** object.
-##### The easiest way to apply timezone is just by importing it from its respective `tz/` path:
+Timezones are applicable to `DateTime` or `Interval` components. The only correct way to apply timezone is via **`timezone` prop**. Having timezone in the date-string itself DOES NOT affect how the date will be displayed. Without **`timezone` prop** the timezone **defaults to local**.
+
+**❌ Incorrect:**
+Setting timezone right inside the date string. It will only affect how the date will be interpreted.
+```tsx
+<DateTime at='2025-02-05T12:00+01:00'>
+  {dt => <span>It's {dt.HH}:{dt.mm} in Belgrade!</span>}
+</DateTime>
+```
+
+**✅ Correct:**
+Applying timezone via **`timezone` prop:**
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
 ```
+You can still put timezone offset inside the date string, just keep in mind it will only affect parsing process and not formatting.
+```tsx
+<DateTime at='2025-02-05T12:00+01:00' timezone={Belgrade}>
+  {dt => <span>It's {dt.HH}:{dt.mm} in Belgrade!</span>}
+</DateTime>
+```
+ _→ It's 12:00 in Belgrade!_
 
+> ❗ [Pre-made](#Pre-made%20timezones) and [automatic](#Automatic%20timezones) timezones are dependent on [Int.DateTimeFormat API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) which is widely available across browsers. But if you need even more control, refer to [custom timezones](#Custom%20timezones) section.
+### Pre-made timezones
+The most basic pre-made timezones can be enabled by just strings, these timezones include: `"Local"` (also is default) and `"UTC"`:
+```tsx
+<DateTime at={Date.now()} timezone="UTC">
+  {dt => <span>It's {dt.HH}:{dt.mm} UTC!</span>}
+</DateTime>
+```
+ _→ It's 11:00 UTC!_
+##### To statically apply a pre-made timezone you can import it from its `tz/` path:
+Each path corresponds to the IANA name:
+```tsx
+import { DateTime } from 'react-time-formatter';
+import Belgrade from 'react-time-formatter/tz/Europe/Belgrade'
+```
+Just pass it to timezone prop:
 ```tsx
 <DateTime at={Date.now()} timezone={Belgrade}>
   {dt => <span>It's {dt.HH}:{dt.mm} in Belgrade!</span>}
 </DateTime>
 ```
- _→ It's 01:00 in Belgrade!_
+ _→ It's 12:00 in Belgrade!_
 
-##### Alternatively, timezone can be applied by being defined manually:
+### Automatic timezones
+If you want to apply the timezone dynamically or the desired timezone is absent from the pre-made timezones list, you can use `createTimezone` helper that will create a timezone for you.
+##### To create an automatic timezone, just pass its IANA name:
 ```tsx
 import { DateTime } from 'react-time-formatter';
 import { createTimezone } from 'react-time-formatter/tz/createTimezone'
 
 const Tokyo = createTimezone('Asia/Tokyo');
 ```
-
+Similarly, just pass it to timezone prop:
 ```tsx
 <DateTime at={Date.now()} timezone={Tokyo}>
   {dt => <span>It's {dt.HH}:{dt.mm} in Tokyo!</span>}
 </DateTime>
 ```
  _→ It's 10:00 in Tokyo!_
-
 ##### Invalid timezones will never produce a valid-looking result:
 ```tsx
 import { DateTime } from 'react-time-formatter';
@@ -279,36 +321,29 @@ const What = createTimezone('Invalid/Unknown');
 </DateTime>
 ```
  _→ It's always ##:## in the invalid timezone!_
-### Custom Timezone
-Custom timezones are defined by a **TimezoneOffsetResolver** function that takes a date and returns a timezone offset in minutes. They can also be defined by a plain number if you need a static offset.
+### Custom Timezones
+Custom timezones are defined by a **TimezoneOffsetResolver** function `(date: Date) => number` which takes single `Date` argument and returns timezone offset **in minutes**. Static timezones (with no DST) may also be just defined as number.
 ##### The simplest custom timezone:
-Just a static UTC+3 offset
+Just a static UTC+3 offset:
 ```tsx
 const UTC3 = () => -180;
 ```
-Note that `-180` translates into `UTC+3`, that's because timezone offset is consistent with JS `Date.prototype.getTimezoneOffset()` function that defines timezone offset as **how many minutes should be added to local timezone to get UTC**.
-
+Also valid:
+```tsx
+const UTC3 = -180;
+```
+Note that `-180` translates into `UTC+3`. Timezone offset is consistent with JS `Date.prototype.getTimezoneOffset()` function that defines timezone offset as **how many minutes should be added to local timezone to get UTC**.
 ```tsx
 <DateTime at={Date.now()} timezone={UTC3}>
   {dt => <span>UTC{t.ZZ} time is {dt.HH}:{dt.mm}</span>}
 </DateTime>
 ```
- _→ UTC+0300 time is 03:00_
-
-Literal:
-```tsx
-<DateTime at={Date.now()} timezone={-180}>
-  {dt => <span>UTC{t.ZZ} time is {dt.HH}:{dt.mm}</span>}
-</DateTime>
-```
- _→ UTC+0300 time is 03:00_
-
+ _→ UTC+0300 time is 14:00_
 ##### The custom implementation of the local timezone:
-Local timezone is applied by default and it can be imported from `tz/` module, so you don't normally have to implement it. But if you had to, it would look like this:
+Local timezone is applied by default so you don't normally have to implement it. But if you had to, it would look like this:
 ```typescript
 const Local = (date: Date) => date.getTimezoneOffset();
 ```
-
 ##### The custom implementation of the Berlin timezone with its DST rules:
 In case you can't rely on browser's timezone implementation and need your timezone to always have the same behaviour, you can define your all DST rules explicitly:
 ```tsx
@@ -346,6 +381,9 @@ const Berlin = (date: Date): number => {
  _→ It's 01:00 in Berlin!_
 ## Type reference
 ### CalendarDate
+Can act as input for: [DateTime](#DateTime), [Interval](#Interval)
+Matching type is returned by: [DateTime](#DateTime)
+
 A flat object representation for date. Must include at least year value. **`dt`** is guaranteed to be valid **CalendarDate**.
 ```ts
 // year and month, all the rest values will be set to 0
@@ -380,6 +418,9 @@ const full = {
 }
 ```
 ### RelativeTime
+Can act as input for: [Duration](#Duration)
+Matching type is returned by: [Duration](#Duration), [Interval](#Interval)
+
 A flat representation of quantity of time. Must include at least one time unit to be valid. **`t`** is guaranteed to be valid **RelativeTime**.
 ```ts
 // can't be empty object
