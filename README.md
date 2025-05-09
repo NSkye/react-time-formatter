@@ -64,7 +64,7 @@ const { Interval } = require('react-time-formatter/Interval');
 There's only one guideline.
 ### Avoid early or unnecessary dereference
 **❌ Incorrect:**
-Although this may seem to work fine, `HH`, `mm` and `ss` occur before any logic happens which may lead to incorrect results down the line.
+Although this may seem to work fine, `HH`, `mm` and `ss` occur before any logic happens which may lead to incorrect results in some cases.
 ```tsx
 <Interval from={DateA} to={DateB}>
   {({ HH, mm, ss }) => <span>{HH}:{mm}:{ss}</span>}
@@ -88,7 +88,7 @@ Whenever unit is referenced (e.g. `t.hours`) it's assumed this unit is required 
 </Interval>
 ```
 _For 80 minutes will output → 20:00_
-_(hours are referenced at `t.hours`, attempts to render 01:20:00, but hours are not included in return)_
+_(since hours are referenced at `t.hours`, will assume 01:20:00, is being rendered)_
 
 **✅ Correct:**
 Use `total*` units for conditions when applicable:
@@ -100,7 +100,7 @@ Use `total*` units for conditions when applicable:
   }}
 </Interval>
 ```
-_For 80 minutes will correctly output → 80:00_
+_For 80 minutes will correctly render → 80:00_
 
  **✅ Also correct:**
 Use units that are gonna be used under either condition:
@@ -112,7 +112,7 @@ Use units that are gonna be used under either condition:
   }}
 </Interval>
 ```
-_For 80 minutes will correctly output → 80:00_
+_For 80 minutes will correctly render → 80:00_
 
 ## API Reference
 ### DateTime
