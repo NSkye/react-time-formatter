@@ -78,7 +78,7 @@ Safe. Each unit is referenced only when it's needed.
 </Interval>
 ```
 **❌ Incorrect:**
-Whenever unit is referenced (e.g. `t.hours`) it's assumed this unit is required for formatting.
+Whenever unit is referenced (e.g. `t.hours`) it's assumed to be used.
 ```tsx
 <Interval from={DateA} to={DateB}>
   {t => {
