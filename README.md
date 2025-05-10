@@ -121,12 +121,12 @@ _For 80 minutes will correctly render → 80:00_
 #### Props
 - `at:` `number` | `string` | `Date` | [`CalendarDate`](#CalendarDate) — The date to be displayed.
 - `timezone?:` `'UTC'` | `'Local'` | `number` | [`Timezone`](#Timezone) — The timezone in which the date will be displayed.
-- `children?:` [#Render](#render) — Render function
-- `render?:` [#Render](#render) — Render function (alias for `children`)
+- `children?:` [Render](#render-datetime) — Render function
+- `render?:` [Render](#render-datetime) — Render function (alias for `children`)
 #### Output
 Passed to render function and abbreviated as `dt` in this doc.
 
-<a id="render"></a>
+<a id="render-datetime"></a>
 ```tsx
 <DateTime at={new Date('2025-02-05T15:08:09.998')}>
   {dt => <span>{dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY}</span>}
@@ -178,11 +178,12 @@ Are always of `number` type. Recommended for conditional logic and debugging, wi
 > ❗ For Duration **`years` are approximated to 365 days** and **`months` are approximated to `30 days`.**  Use [Interval](#Interval) if these units need to be precisely reflected.
 #### Props
 - `of:` `number` [`RelativeTime`](#RelativeTime) — The quantity of time in milliseconds or arbitrary units
-- `children?:` [`Render`](#Render) — Render function
-- `render?:` [`Render`](#Render) — Render function (alias for `children`)
+- `children?:` [`Render`](#render-duration) — Render function
+- `render?:` [`Render`](#render-duration) — Render function (alias for `children`)
 #### Output
 Passed to render function and abbreviated as `t` in this doc.
 
+<a id="render-duration"></a>
 ```tsx
 <Duration of={4800000}>
   {t => <span>{t.HH} hours {t.mm} minutes</span>}
@@ -242,8 +243,10 @@ Independent from the rest of keys and their insertion doesn't affect formatting 
 - `from:` `number` | `string` | `Date` | [`CalendarDate`](#CalendarDate) — Starting point in time
 - `to:` `number` | `string` | `Date` | [`CalendarDate`](#CalendarDate) — Ending point in time (non-inclusive)
 - `timezone?:` `'UTC'` | `'Local'` | `number` | [`Timezone`](#Timezone) — The timezone in which the difference will be calculated
-- `children?:` [`Render`](#Render) — Render function
-- `render?:` [`Render`](#Render) — Render function (alias for `children`)
+- `children?:` [`Render`](#render-interval) — Render function
+- `render?:` [`Render`](#render-interval) — Render function (alias for `children`)
+
+<a id="render-interval"></a>
 #### Output
 Passed to render function and abbreviated as `t` in this doc.
 ```tsx
@@ -324,7 +327,9 @@ You can still put timezone offset inside the date string, just keep in mind it w
 ```
  _→ It's 12:00 in Belgrade!_
 
-> ❗ [Pre-made](#Pre-made%20timezones) and [automatic](#Automatic%20timezones) timezones are dependent on [Int.DateTimeFormat API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) which is widely available across browsers. But if you need even more control, refer to [custom timezones](#Custom%20timezones) section.
+> ❗ [Pre-made](#pre-made-timezones) and [automatic](#automatic-timezones) timezones are dependent on [Int.DateTimeFormat API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat) which is widely available across browsers. But if you need even more control, refer to [custom timezones](#custom-timezones) section.
+
+<a id="pre-made-timezones"></a>
 ### Pre-made timezones
 The most basic pre-made timezones can be enabled by just strings, these timezones include: `"Local"` (also is default) and `"UTC"`:
 ```tsx
@@ -347,6 +352,7 @@ Just pass it to timezone prop:
 ```
  _→ It's 12:00 in Belgrade!_
 
+<a id="automatic-timezones"></a>
 ### Automatic timezones
 If you want to apply the timezone dynamically or the desired timezone is absent from the pre-made timezones list, you can use `createTimezone` helper that will create a timezone for you.
 ##### To create an automatic timezone, just pass its IANA name:
@@ -377,6 +383,8 @@ const What = createTimezone('Invalid/Unknown');
 </DateTime>
 ```
  _→ It's always ##:## in the invalid timezone!_
+
+<a id="custom-timezones"></a>
 ### Custom Timezones
 Custom timezones are defined by a **TimezoneOffsetResolver** function `(date: Date) => number` which takes single `Date` argument and returns timezone offset **in minutes**. Static timezones (with no DST) may also be just defined as number.
 ##### The simplest custom timezone:
