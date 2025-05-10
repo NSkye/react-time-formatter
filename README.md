@@ -1,6 +1,7 @@
+React-first date & time formatting library with a clear API and built-in timezone support
+
 [![Minzipped size](https://badgen.net/bundlephobia/minzip/react-time-formatter?color=green)](https://bundlephobia.com/package/react-time-formatter) [![Dependencies](https://badgen.net/bundlephobia/dependency-count/react-time-formatter?color=green)](https://bundlephobia.com/package/react-time-formatter) [![Tree-shakable](https://badgen.net/bundlephobia/tree-shaking/react-time-formatter?color=green)](https://bundlephobia.com/package/react-time-formatter) [![npm version](https://img.shields.io/npm/v/react-time-formatter?color=informational)](https://www.npmjs.com/package/react-time-formatter)
 
-React-first date & time formatting library with a clear API and built-in timezone support
 ## Features
 
 - 📅 `DateTime` — A consistent wrapper around `Date` with zoned time support
@@ -173,7 +174,7 @@ Are always of `number` type. Recommended for conditional logic and debugging, wi
 
 ### Duration
 `Duration` is a **fixed quantity of time units, independent of specific dates** or positions on a timeline.
-> ❗ For Duration **`years` are approximated to 365 days** and **`months` are approximated to `30 days`.**  Use [Interval](###Interval) if these units need to be precisely reflected.
+> ❗ For Duration **`years` are approximated to 365 days** and **`months` are approximated to `30 days`.**  Use [Interval](#Interval) if these units need to be precisely reflected.
 #### Props
 - `of:` `number` [`RelativeTime`](#RelativeTime) — The quantity of time in milliseconds or arbitrary units
 - `children?:` [`Render`](#Render) — Render function
@@ -235,7 +236,7 @@ Independent from the rest of keys and their insertion doesn't affect formatting 
 | `t.totalMilliseconds` | `number` | `164473689998` |                                                          |
 
 ### Interval
-`Interval` is a **calendar-aware span between two dates.** Unlike [Duration](###Duration) Interval **accounts for** the variable length of `months` and `years`.
+`Interval` is a **calendar-aware span between two dates.** Unlike [Duration](#Duration) Interval **accounts for** the variable length of `months` and `years`.
 #### Props
 - `from:` `number` | `string` | `Date` | [`CalendarDate`](#CalendarDate) — Starting point in time
 - `to:` `number` | `string` | `Date` | [`CalendarDate`](#CalendarDate) — Ending point in time (non-inclusive)
