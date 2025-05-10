@@ -121,11 +121,12 @@ _For 80 minutes will correctly render → 80:00_
 #### Props
 - `at:` `number` | `string` | `Date` | [`CalendarDate`](#CalendarDate) — The date to be displayed.
 - `timezone?:` `'UTC'` | `'Local'` | `number` | [`Timezone`](#Timezone) — The timezone in which the date will be displayed.
-- `children?:` [`Render`](#Render) — Render function
-- `render?:` [`Render`](#Render) — Render function (alias for `children`)
+- `children?:` [#Render](#render) — Render function
+- `render?:` [#Render](#render) — Render function (alias for `children`)
 #### Output
 Passed to render function and abbreviated as `dt` in this doc.
 
+<a id="render"></a>
 ```tsx
 <DateTime at={new Date('2025-02-05T15:08:09.998')}>
   {dt => <span>{dt.hh}:{dt.mm} {dt.A} {dt.MM}/{dt.DD} {dt.YYYY}</span>}
